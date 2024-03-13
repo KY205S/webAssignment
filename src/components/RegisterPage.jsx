@@ -16,15 +16,10 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Margin } from "@mui/icons-material";
-import { Button } from "@mui/material";
-import { Container, Stack } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-const Welcome = () => {
-  const navigate = useNavigate();
-
+const RegisterPage = () => {
   return (
-    <Box>
+    <Box flex={9} p={2}>
       <Card sx={{ marginLeft: 5 }}>
         <CardHeader
           avatar={
@@ -42,39 +37,18 @@ const Welcome = () => {
         <CardMedia
           component="img"
           height="20%"
-          image="https://dailysceptic.org/wp-content/uploads/2022/12/Rainbow-NHS-badge_Video-01-01-01-01-1024x576-1.png"
+          image="https://media.istockphoto.com/id/1373745245/vector/login-page-background-enter-username-and-password-ui-user-interface.jpg?s=612x612&w=0&k=20&c=lTFio2kjoTHxwlEPxLGf59_vibtvjzp4ypy-RVcQTp0="
           alt="Paella dish"
         />
         <CardContent>
-          <Typography variant="body1" color="text.secondary">
-            Welcome to NHS Help! Please login to access your account and manage
-            your services. If you don't have an account, feel free to register
-            and start using our services today.
+          <Typography variant="body2" color="text.secondary">
+            This is NHS help webpage, please to login in first to use our
+            service
           </Typography>
         </CardContent>
-        <CardActions sx={{ justifyContent: "center", padding: 2 }}>
-          <Stack spacing={2} justifyContent={"space-between"}>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1, ml: 2 }} // Increase padding and font size, add margin left for spacing
-              onClick={() => navigate("/register")}
-            >
-              Register
-            </Button>
-          </Stack>
-        </CardActions>
       </Card>
     </Box>
   );
 };
 
-export default Welcome;
+export default RegisterPage;

@@ -11,20 +11,39 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import Switch from "@mui/material/Switch";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <Box flex={2} p={2}>
-      <Box position="fixed">
+    <Box flex={1} p={1}>
+      <Box
+        sx={{
+          borderRight: 1, // Add a border right
+          borderColor: "divider", // Use the theme's divider color
+          width: 180,
+          height: "calc(100vh - 64px)", // Adjust 64px to the height of your header
+          position: "fixed",
+          top: "64px",
+        }}
+      >
         <List>
           <ListItem disablePadding>
-            <ListItemButton component="a">
-              <ListItemIcon>
-                <AddBoxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Booking" />
-            </ListItemButton>
+            <Link
+              to="/login"
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <ListItemButton component="a">
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Booking" />
+              </ListItemButton>
+            </Link>
           </ListItem>
+          <Divider />
 
           <ListItem disablePadding>
             <ListItemButton>
@@ -34,6 +53,7 @@ const Sidebar = () => {
               <ListItemText primary="History" />
             </ListItemButton>
           </ListItem>
+          <Divider />
 
           <ListItem disablePadding>
             <ListItemButton>
@@ -41,6 +61,7 @@ const Sidebar = () => {
               <ListItemText primary="Prescription" />
             </ListItemButton>
           </ListItem>
+          <Divider />
 
           <ListItem disablePadding>
             <ListItemButton>
@@ -48,6 +69,7 @@ const Sidebar = () => {
               <ListItemText primary="Test Record" />
             </ListItemButton>
           </ListItem>
+          <Divider />
 
           <ListItem disablePadding>
             <ListItemButton>
@@ -55,6 +77,7 @@ const Sidebar = () => {
               <ListItemText primary="Settings" />
             </ListItemButton>
           </ListItem>
+          <Divider />
 
           <ListItem disablePadding>
             <ListItemButton>
@@ -62,6 +85,7 @@ const Sidebar = () => {
               <ListItemText primary="About us" />
             </ListItemButton>
           </ListItem>
+          <Divider />
 
           <ListItem disablePadding>
             <ListItemButton>
