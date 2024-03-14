@@ -9,12 +9,15 @@ import {
   FormControlLabel,
   Checkbox,
   Typography,
+  Stack,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useState } from "react";
 
 const LoginPage = () => {
+  const [isDoctor, setIsDoctor] = useState(false);
   return (
     <Box
       marginLeft={35}
@@ -75,11 +78,19 @@ const LoginPage = () => {
               ),
             }}
           />
-          <FormControlLabel
-            control={<Checkbox name="remember" color="primary" />}
-            label="Remember me"
-            sx={{ alignSelf: "flex-start" }}
-          />
+          <Stack direction={"row"} sx={{ marginLeft: -6 }} spacing={10}>
+            <FormControlLabel
+              control={<Checkbox name="remember" color="primary" />}
+              label="Remember me"
+              sx={{ alignSelf: "flex-start" }}
+            />
+            <FormControlLabel
+              control={<Checkbox name="remember" color="primary" />}
+              label="Doctor"
+              sx={{ alignSelf: "flex-start" }}
+              onChange={(e) => setIsDoctor(e.target.checked)}
+            />
+          </Stack>
           <Button
             variant="contained"
             color="primary"
