@@ -8,6 +8,7 @@ import { Box, Stack } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import History from "./user/History";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/" element={<Feed />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/history" element={<History />} />
               </Routes>
             </Box>
             <Rightbar />

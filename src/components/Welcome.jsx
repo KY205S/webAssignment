@@ -70,6 +70,15 @@ const Welcome = () => {
             >
               Register
             </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
+              onClick={() => navigate("/History")}
+            >
+              History
+            </Button>
           </Stack>
         </CardActions>
       </Card>

@@ -6,7 +6,6 @@ import {
   CardContent,
   TextField,
   Button,
-  FormControlLabel,
   Typography,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -15,58 +14,20 @@ import { useState } from "react";
 import { Email } from "@mui/icons-material";
 import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
-const RegisterPage = () => {
+const MedicalHistory = () => {
   const [step, setStep] = useState(1);
   //Save data
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthYear, setBirthYear] = useState("");
-  const [gender, setGender] = useState("");
-
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleUserNameChange = (event) => {
-    setUserName(event.target.value);
-  };
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value);
-  };
-
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  };
-
-  const handlePhoneNumberChange = (event) => {
-    setPhoneNumber(event.target.value);
-  };
-
-  const handleDayChange = (event) => {
-    setBirthDay(event.target.value);
-  };
-
-  const handleMonthChange = (event) => {
-    setBirthMonth(event.target.value);
-  };
-
-  const handleYearChange = (event) => {
-    setBirthYear(event.target.value);
-  };
+  const [drinking, setDrinking] = useState("");
+  const [somking, setSmoking] = useState("");
+  const [neverous, setNeverous] = useState("");
+  const [worrying, setWorrying] = useState("");
+  const [fatigue, setFatigue] = useState("");
+  const [depressed, setDepressed] = useState("");
+  const [irritable, setIrritable] = useState("");
+  const [insomina, setInsomina] = useState("");
+  const [otherCondition, setOther] = useState("");
 
   const handleNext = () => {
     setStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
@@ -76,40 +37,45 @@ const RegisterPage = () => {
     setStep((prevStep) => (prevStep > 1 ? prevStep - 1 : prevStep));
   };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-    // If confirmPassword is not empty, check if both passwords are the same
-    if (confirmPassword) {
-      setError(event.target.value !== confirmPassword);
-    }
+  const handleOtherText = (event) => {
+    setOther(event.target.value);
   };
 
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-    setError(password !== event.target.value);
-  };
+  const [conditions, setConditions] = useState({
+    asthma: false,
+    diabetes: false,
+    epilepsy: false,
+    rheumatoidArthritis: false,
+    highBloodPressure: false,
+    heartDisease: false,
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+    heartAttack: false,
+    BipolarDisorder: false,
+    stroke: false,
+    kidneyDisease: false,
+    demenita: false,
+    cancer: false,
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+    // Add more conditions based on your requirements...
+  });
+
+  const handleConditionChange = (event) => {
+    setConditions({ ...conditions, [event.target.name]: event.target.checked });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = {
-      userName,
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-      birthDay,
-      birthMonth,
-      birthYear,
-      gender,
+      drinking,
+      somking,
+      neverous,
+      worrying,
+      irritable,
+      depressed,
+      fatigue,
+      insomina,
+      otherCondition,
+      asthma: conditions.asthma,
     };
 
     // Here you can call an API or perform other actions with the formData
@@ -131,7 +97,7 @@ const RegisterPage = () => {
                 p: 2,
               }}
             >
-              <Card sx={{ maxWidth: 400, width: "100%", m: 2 }}>
+              <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -147,7 +113,7 @@ const RegisterPage = () => {
                     style={{ maxWidth: "100px", marginTop: "20px" }}
                   />
                   <Typography variant="h5" component="h1" sx={{ mt: 2 }}>
-                    Patient Register
+                    Medicine History
                   </Typography>
                 </Box>
 
@@ -159,205 +125,98 @@ const RegisterPage = () => {
                     alignItems: "center",
                   }}
                 >
-                  <TextField
-                    fullWidth
-                    id="input-username"
-                    label="User Name"
-                    variant="outlined"
-                    value={userName}
-                    onChange={handleUserNameChange}
-                    InputProps={{
-                      startAdornment: (
-                        <AccountCircle sx={{ color: "action.active", mr: 1 }} />
-                      ),
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    id="input-email"
-                    label="Email Address"
-                    variant="outlined"
-                    value={email}
-                    onChange={handleEmailChange}
-                    InputProps={{
-                      startAdornment: (
-                        <Email sx={{ color: "action.active", mr: 1 }} />
-                      ),
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    id="input-password"
-                    label="Set Password"
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={handlePasswordChange}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockIcon sx={{ color: "action.active" }} />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    id="input-password2"
-                    label="Confirm Password"
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={handleConfirmPasswordChange}
-                    error={error}
-                    helperText={error ? "Passwords don't match" : ""}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockIcon sx={{ color: "action.active" }} />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                  <Grid container spacing={2}>
+                    {[
+                      {
+                        name: "asthma",
+                        label: "Asthma",
+                      },
+                      {
+                        name: "diabetes",
+                        label: "Diabetes ",
+                      },
+                      { name: "epilepsy", label: "Epilepsy" },
+                      {
+                        name: "rheumatoidArthritis",
+                        label: "Rheumatoid Arthritis",
+                      },
+                      {
+                        name: "highBloodPressure",
+                        label: "High blood pressure",
+                      },
+                      {
+                        name: "heartDisease",
+                        label: "heart disease",
+                      },
+                      {
+                        name: "stroke",
+                        label: "Stroke",
+                      },
+                      {
+                        name: "kidneyDisease",
+                        label: "Kidney disease",
+                      },
+                      {
+                        name: "demenita",
+                        label: "Demenita",
+                      },
+                      {
+                        name: "caner",
+                        label: "Cancer",
+                      },
+                      {
+                        name: "heartAttack",
+                        label: "Heart attack",
+                      },
+                      {
+                        name: "BipolarDisorder",
+                        label: "Bipolar disorder",
+                      },
+                    ].map((condition) => (
+                      <Grid
+                        item
+                        xs={12}
+                        style={{ marginBottom: -16 }}
+                        key={condition.name}
+                      >
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={conditions[condition.name]}
+                              onChange={handleConditionChange}
+                              name={condition.name}
+                            />
+                          }
+                          label={condition.label}
+                          sx={{ justifyContent: "space-between" }}
+                          labelPlacement="start"
+                        />
+                      </Grid>
+                    ))}
 
-                  <TextField
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    variant="outlined"
-                    value={firstName}
-                    onChange={handleFirstNameChange}
-                  />
-                  <TextField
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    variant="outlined"
-                    value={lastName}
-                    onChange={handleLastNameChange}
-                  />
-                  <TextField
-                    fullWidth
-                    id="phoneNumber"
-                    label="Phone Number"
-                    type="Number"
-                    variant="outlined"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                  />
-
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12}>
-                      <Typography variant="body1" gutterBottom>
-                        Date of Birth
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        label="Day"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        variant="outlined"
-                        value={birthDay}
-                        onChange={handleDayChange}
-                        inputProps={{ min: 1, max: 31 }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        label="Month"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        variant="outlined"
-                        value={birthMonth}
-                        onChange={handleMonthChange}
-                        inputProps={{ min: 1, max: 12 }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        label="Year"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        variant="outlined"
-                        value={birthYear}
-                        onChange={handleYearChange}
-                        inputProps={{
-                          min: 1900,
-                          max: new Date().getFullYear(),
-                        }}
-                      />
-                    </Grid>
+                    <TextField
+                      fullWidth
+                      id="firstName"
+                      label="Other conditions"
+                      multiline
+                      rows={2}
+                      variant="outlined"
+                      value={otherCondition}
+                      onChange={handleOtherText}
+                      sx={{
+                        width: "80%",
+                        boxSizing: 4,
+                        marginTop: 6,
+                        marginLeft: 4,
+                      }}
+                    />
                   </Grid>
-
-                  <FormControl
-                    component="fieldset"
-                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
-                  >
-                    <FormLabel component="legend">Gender</FormLabel>
-                    <RadioGroup
-                      row
-                      aria-label="gender"
-                      name="gender"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value="male"
-                        control={<Radio />}
-                        label="Male"
-                      />
-                      <FormControlLabel
-                        value="female"
-                        control={<Radio />}
-                        label="Female"
-                      />
-                      <FormControlLabel
-                        value="unknown"
-                        control={<Radio />}
-                        label="Unknown"
-                      />
-                    </RadioGroup>
-                  </FormControl>
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1, width: "100%" }}
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
 
                   <Button
                     onClick={handleNext}
                     variant="contained"
                     color="primary"
-                    sx={{ mt: 1, width: "100%" }}
+                    sx={{ mt: 1, width: "60%" }}
                   >
                     Next
                   </Button>
@@ -383,7 +242,7 @@ const RegisterPage = () => {
                 p: 2,
               }}
             >
-              <Card sx={{ maxWidth: 400, width: "100%", m: 2 }}>
+              <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -410,9 +269,289 @@ const RegisterPage = () => {
                     alignItems: "center",
                   }}
                 >
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Drinking Alcohol</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="drinking"
+                      name="drinking"
+                      value={drinking}
+                      onChange={(e) => setDrinking(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Smoking</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="smoking"
+                      name="smoking"
+                      value={somking}
+                      onChange={(e) => setSmoking(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Neverous</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="neverous"
+                      name="neverous"
+                      value={neverous}
+                      onChange={(e) => setNeverous(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Worrying</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="worrying"
+                      name="worrying"
+                      value={worrying}
+                      onChange={(e) => setWorrying(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Irritable</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="Irritable"
+                      name="Irritable"
+                      value={irritable}
+                      onChange={(e) => setIrritable(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Depressed</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="Depressed"
+                      name="Depressed"
+                      value={depressed}
+                      onChange={(e) => setDepressed(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Insomina</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="Insominia"
+                      name="Insonia"
+                      value={insomina}
+                      onChange={(e) => setInsomina(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <FormControl
+                    component="fieldset"
+                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
+                  >
+                    <FormLabel component="legend">Fatigue</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-label="Fatigue"
+                      name="Fatigue"
+                      value={fatigue}
+                      onChange={(e) => setFatigue(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="Never"
+                        control={<Radio />}
+                        label="Never"
+                      />
+                      <FormControlLabel
+                        value="Sometimes"
+                        control={<Radio />}
+                        label="Sometimes"
+                      />
+                      <FormControlLabel
+                        value="Often"
+                        control={<Radio />}
+                        label="Often"
+                      />
+                      <FormControlLabel
+                        value="Always"
+                        control={<Radio />}
+                        label="Always"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
                   <Button
                     variant="contained"
                     color="primary"
+                    type="submit"
                     sx={{ mt: 1, width: "100%" }}
                   >
                     Submit
@@ -436,4 +575,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default MedicalHistory;
