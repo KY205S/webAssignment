@@ -25,7 +25,7 @@ const Welcome = () => {
 
   return (
     <Box flex={9} p={2}>
-      <Card sx={{ marginLeft: 5 }}>
+      <Card sx={{ marginLeft: 15 }}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "skyblue" }} aria-label="recipe">
@@ -42,14 +42,12 @@ const Welcome = () => {
         <CardMedia
           component="img"
           height="20%"
-          image="https://dailysceptic.org/wp-content/uploads/2022/12/Rainbow-NHS-badge_Video-01-01-01-01-1024x576-1.png"
+          image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvRBb3cf1Uf7E2x6t0QseC5omXlHHTAZSaCg&usqp=CAU"
           alt="Paella dish"
         />
         <CardContent>
           <Typography variant="body1" color="text.secondary">
-            Welcome to NHS Help! Please login to access your account and manage
-            your services. If you don't have an account, feel free to register
-            and start using our services today.
+            Welcome Doctor Please manage your appointment
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "center", padding: 2 }}>
@@ -78,22 +76,6 @@ const Welcome = () => {
               onClick={() => navigate("/History")}
             >
               History
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/user")}
-            >
-              WelcomeU
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/doctor")}
-            >
-              WelcomeD
             </Button>
           </Stack>
         </CardActions>

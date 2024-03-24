@@ -42,14 +42,12 @@ const Welcome = () => {
         <CardMedia
           component="img"
           height="20%"
-          image="https://dailysceptic.org/wp-content/uploads/2022/12/Rainbow-NHS-badge_Video-01-01-01-01-1024x576-1.png"
+          image="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
           alt="Paella dish"
         />
         <CardContent>
           <Typography variant="body1" color="text.secondary">
-            Welcome to NHS Help! Please login to access your account and manage
-            your services. If you don't have an account, feel free to register
-            and start using our services today.
+            Hello User, welcome to our NHS Help! Please book your appointment
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "center", padding: 2 }}>
@@ -60,7 +58,7 @@ const Welcome = () => {
               sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
               onClick={() => navigate("/login")}
             >
-              Login
+              Booking Appointment
             </Button>
             <Button
               variant="outlined"
@@ -68,7 +66,7 @@ const Welcome = () => {
               sx={{ fontSize: "1.1rem", px: 3, py: 1, ml: 2 }} // Increase padding and font size, add margin left for spacing
               onClick={() => navigate("/register")}
             >
-              Register
+              history
             </Button>
 
             <Button
@@ -78,22 +76,6 @@ const Welcome = () => {
               onClick={() => navigate("/History")}
             >
               History
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/user")}
-            >
-              WelcomeU
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/doctor")}
-            >
-              WelcomeD
             </Button>
           </Stack>
         </CardActions>

@@ -15,9 +15,70 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useState } from "react";
+import MyContext from "./Context1";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const [isDoctor, setIsDoctor] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { isDoctor, setIsDoctor, isLoggedIn, setIsLoggedIn } =
+    useContext(MyContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoggedIn(false);
+    setIsDoctor(false);
+  }, []);
+  const handleLogin = () => {
+    // Simulate server-side data fetching
+    new Promise((resolve, reject) => {
+      // Simulate a delay of 1 second
+      setTimeout(() => {
+        // Check if the username and password are valid
+        if (username === "yang" && password === "abc") {
+          // Simulate a successful login response
+          console.log(
+            "Login successful:",
+            username,
+            isDoctor ? "doctor" : "patient"
+          );
+          resolve({
+            status: 200,
+            data: {
+              user: {
+                username: username,
+                role: isDoctor ? "doctor" : "patient",
+              },
+            },
+          });
+          setIsLoggedIn(true);
+          navigate(isDoctor ? "/doctor" : "/user");
+        } else {
+          console.log(username, password);
+          // Simulate a failed login response
+          resolve({
+            status: 401,
+            message: "Invalid username or password",
+          });
+        }
+      }, 1000);
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Login successful:", response.data.user);
+          // Here you can handle the successful login, e.g. redirect the user to another page
+        } else {
+          console.log("Login failed:", response.message);
+          // Here you can handle the failed login, e.g. show an error message
+        }
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error);
+        // Here you can handle any errors that occurred during the login
+      });
+  };
+
   return (
     <Box
       marginLeft={35}
@@ -60,6 +121,8 @@ const LoginPage = () => {
             id="input-username"
             label="Username"
             variant="outlined"
+            value={username} // Add this line
+            onChange={(e) => setUsername(e.target.value)}
             InputProps={{
               startAdornment: (
                 <AccountCircle sx={{ color: "action.active", mr: 1 }} />
@@ -72,6 +135,8 @@ const LoginPage = () => {
             label="Password"
             type="password"
             variant="outlined"
+            value={password} // Add this line
+            onChange={(e) => setPassword(e.target.value)}
             InputProps={{
               startAdornment: (
                 <LockIcon sx={{ color: "action.active", mr: 1 }} />
@@ -95,6 +160,7 @@ const LoginPage = () => {
             variant="contained"
             color="primary"
             sx={{ mt: 1, width: "100%" }}
+            onClick={handleLogin}
           >
             LOGIN
           </Button>
@@ -103,6 +169,7 @@ const LoginPage = () => {
             variant="outlined"
             color="primary"
             sx={{ mt: 0, width: "100%" }}
+            onClick={() => navigate("/register")}
           >
             REGISTER
           </Button>
