@@ -122,7 +122,7 @@ const RegularSidebar = () => {
         <List>
           <ListItem disablePadding>
             <Link
-              to="/login"
+              to="/booking"
               style={{
                 textDecoration: "none",
                 color: "inherit",
@@ -138,22 +138,39 @@ const RegularSidebar = () => {
           </ListItem>
           <Divider />
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="History" />
-            </ListItemButton>
-          </ListItem>
-          <Divider />
+          <Link
+            to="/arrangement"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Arrangement" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </Link>
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon></ListItemIcon>
-              <ListItemText primary="Prescription" />
-            </ListItemButton>
-          </ListItem>
+          <Link
+            to="/record"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon></ListItemIcon>
+                <ListItemText primary="Records" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </Link>
           <Divider />
 
           <ListItem disablePadding>
@@ -164,20 +181,38 @@ const RegularSidebar = () => {
           </ListItem>
           <Divider />
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon></ListItemIcon>
-              <ListItemText primary="Settings" />
-            </ListItemButton>
-          </ListItem>
+          <Link
+            to="/message"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon></ListItemIcon>
+                <ListItemText primary="Message" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </Link>
           <Divider />
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon></ListItemIcon>
-              <ListItemText primary="About us" />
-            </ListItemButton>
-          </ListItem>
+          <Link
+            to="/home"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon></ListItemIcon>
+                <ListItemText primary="setting" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </Link>
           <Divider />
 
           <ListItem disablePadding>

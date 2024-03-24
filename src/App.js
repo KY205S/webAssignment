@@ -11,9 +11,12 @@ import History from "./user/History";
 import Welcome from "./components/Welcome";
 import { useState } from "react";
 import MyContext from "./components/Context1";
-import HomeD from "./user/HomeU";
-import HomeU from "./doctor/HomeD";
-
+import HomeU from "./user/HomeU";
+import HomeD from "./doctor/HomeD";
+import Booking from "./user/booking";
+import Arrangement from "./user/Arrangement";
+import Record from "./user/Record";
+import Message from "./user/Message";
 function App() {
   const [isDoctor, setIsDoctor] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,6 +49,11 @@ function App() {
                   <Route path="/history" element={<History />} />
                   <Route path="/user" element={<HomeD />} />
                   <Route path="/doctor" element={<HomeU />} />
+                  <Route path="/booking" element={<Booking />} />
+                  <Route path="/arrangement" element={<Arrangement />} />
+                  <Route path="/record" element={<Record />} />
+                  <Route path="/message" element={<Message />} />
+                  <Route path="/home" element={<HomeU />} />
                 </Routes>
               </Box>
               <Rightbar />
