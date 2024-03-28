@@ -17,6 +17,7 @@ import Booking from "./user/booking";
 import Arrangement from "./user/Arrangement";
 import Record from "./user/Record";
 import Message from "./user/Message";
+import ManageBooking from "./doctor/ManageBooking";
 function App() {
   const [isDoctor, setIsDoctor] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,13 +48,14 @@ function App() {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/history" element={<History />} />
-                  <Route path="/user" element={<HomeD />} />
-                  <Route path="/doctor" element={<HomeU />} />
+                  <Route path="/user" element={<HomeU />} />
+                  <Route path="/doctor" element={<HomeD />} />
                   <Route path="/booking" element={<Booking />} />
                   <Route path="/arrangement" element={<Arrangement />} />
                   <Route path="/record" element={<Record />} />
                   <Route path="/message" element={<Message />} />
                   <Route path="/home" element={<HomeU />} />
+                  <Route path="/manageBooking" element={<ManageBooking />} />
                 </Routes>
               </Box>
               <Rightbar />

@@ -33,7 +33,7 @@ const DoctorSidebar = () => {
         <List>
           <ListItem disablePadding>
             <Link
-              to="/login"
+              to="/manageBooking"
               style={{
                 textDecoration: "none",
                 color: "inherit",
