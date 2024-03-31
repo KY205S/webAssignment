@@ -18,6 +18,10 @@ import Arrangement from "./user/Arrangement";
 import Record from "./user/Record";
 import Message from "./user/Message";
 import ManageBooking from "./doctor/ManageBooking";
+import Admin from "./admin/Admin";
+import RegisterDoctor from "./admin/DoctorRegister";
+import MessageRespond from "./admin/MessageRespond";
+
 function App() {
   const [isDoctor, setIsDoctor] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,6 +60,9 @@ function App() {
                   <Route path="/message" element={<Message />} />
                   <Route path="/home" element={<HomeU />} />
                   <Route path="/manageBooking" element={<ManageBooking />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/registerDoctor" element={<RegisterDoctor />} />
+                  <Route path="/MessageRespond" element={<MessageRespond />} />
                 </Routes>
               </Box>
               <Rightbar />

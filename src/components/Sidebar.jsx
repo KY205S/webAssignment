@@ -229,14 +229,22 @@ const RegularSidebar = () => {
   );
 };
 
+// const Sidebar = () => {
+//   const { isDoctor, isLoggedIn } = useContext(MyContext);
+
+//   if (!isLoggedIn) {
+//     return null;
+//   }
+
+//   return isDoctor ? <DoctorSidebar /> : <RegularSidebar />;
+// };
+
 const Sidebar = () => {
   const { isDoctor, isLoggedIn } = useContext(MyContext);
-
   if (!isLoggedIn) {
     return null;
   }
-
-  return isDoctor ? <DoctorSidebar /> : <RegularSidebar />;
+  return <RegularSidebar />;
 };
 
 export default Sidebar;

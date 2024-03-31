@@ -83,7 +83,7 @@ const Admin = () => {
               variant="contained"
               color="primary"
               sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/MessageRespond")}
+              onClick={() => navigate("/History")}
             >
               Message
             </Button>

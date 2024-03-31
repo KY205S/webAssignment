@@ -20,12 +20,12 @@ import { Button } from "@mui/material";
 import { Container, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const Welcome = () => {
+const MessageR = () => {
   const navigate = useNavigate();
 
   return (
     <Box flex={9} p={2}>
-      <Card sx={{ marginLeft: 15 }}>
+      <Card sx={{ marginLeft: 5 }}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "skyblue" }} aria-label="recipe">
@@ -37,17 +37,17 @@ const Welcome = () => {
               <MoreVertIcon />
             </IconButton>
           }
-          title="NHS Help"
+          title="Message"
         />
         <CardMedia
           component="img"
           height="20%"
-          image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvRBb3cf1Uf7E2x6t0QseC5omXlHHTAZSaCg&usqp=CAU"
+          image="https://cdn1.vectorstock.com/i/1000x1000/34/70/two-color-processing-icon-from-artificial-vector-25693470.jpg"
           alt="Paella dish"
         />
         <CardContent>
           <Typography variant="body1" color="text.secondary">
-            Welcome Doctor Please manage your appointment
+            This page show the all Message
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "center", padding: 2 }}>
@@ -58,24 +58,7 @@ const Welcome = () => {
               sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
               onClick={() => navigate("/login")}
             >
-              Login
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1, ml: 2 }} // Increase padding and font size, add margin left for spacing
-              onClick={() => navigate("/register")}
-            >
-              Register
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
-              onClick={() => navigate("/manageBooking")}
-            >
-              manage
+              Testing
             </Button>
           </Stack>
         </CardActions>
@@ -84,4 +67,4 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default MessageR;

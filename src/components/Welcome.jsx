@@ -95,6 +95,14 @@ const Welcome = () => {
             >
               WelcomeD
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
+              onClick={() => navigate("/admin")}
+            >
+              admin
+            </Button>
           </Stack>
         </CardActions>
       </Card>
