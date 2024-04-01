@@ -208,7 +208,7 @@ const RegularSidebar = () => {
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon></ListItemIcon>
-                <ListItemText primary="setting" />
+                <ListItemText primary="Settings" />
               </ListItemButton>
             </ListItem>
             <Divider />

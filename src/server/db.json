@@ -1,7 +1,31 @@
 {
   "posts": [{ "id": 1, "title": "json-server", "author": "typicode" }],
-  "comments": [{ "id": 1, "body": "some comment", "postId": 1 }],
-  "profile": {
-    "name": "typicode"
-  }
+
+  "approval": [
+    {
+      "userID": 1,
+
+      "identity": 1919423213,
+      "email": "mpse84@153.com",
+      "lastName": "yang",
+      "firstName": "kaiyuan",
+      "phoneNumber": "13379791949"
+    },
+    {
+      "userID": 2,
+      "identity": 1314131,
+      "email": "mp4224@153.com",
+      "lastName": "fzd",
+      "firstName": "xiba",
+      "phoneNumber": "1940841"
+    },
+    {
+      "userID": 3,
+      "identity": 1314131,
+      "email": "mp4224@153.com",
+      "lastName": "fzd",
+      "firstName": "xiba",
+      "phoneNumber": "1940841"
+    }
+  ]
 }

@@ -28,7 +28,6 @@ const MedicalHistory = () => {
   const [irritable, setIrritable] = useState("");
   const [insomina, setInsomina] = useState("");
   const [otherCondition, setOther] = useState("");
-
   const handleNext = () => {
     setStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
   };
@@ -76,6 +75,17 @@ const MedicalHistory = () => {
       insomina,
       otherCondition,
       asthma: conditions.asthma,
+      diabetes: conditions.diabetes,
+      epilepsy: conditions.epilepsy,
+      rheumatoidArthritis: conditions.rheumatoidArthritis,
+      highBloodPressure: conditions.highBloodPressure,
+      heartDisease: conditions.heartDisease,
+      heartAttack: conditions.heartAttack,
+      BipolarDisorder: conditions.BipolarDisorder,
+      stroke: conditions.stroke,
+      kidneyDisease: conditions.kidneyDisease,
+      demenita: conditions.demenita,
+      cancer: conditions.cancer,
     };
 
     // Here you can call an API or perform other actions with the formData

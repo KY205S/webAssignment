@@ -21,6 +21,7 @@ import ManageBooking from "./doctor/ManageBooking";
 import Admin from "./admin/Admin";
 import RegisterDoctor from "./admin/DoctorRegister";
 import MessageRespond from "./admin/MessageRespond";
+import Approval from "./admin/Approval";
 
 function App() {
   const [isDoctor, setIsDoctor] = useState(false);
@@ -62,7 +63,8 @@ function App() {
                   <Route path="/manageBooking" element={<ManageBooking />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/registerDoctor" element={<RegisterDoctor />} />
-                  <Route path="/MessageRespond" element={<MessageRespond />} />
+                  <Route path="/messageRespond" element={<MessageRespond />} />
+                  <Route path="/userApproval" element={<Approval />} />
                 </Routes>
               </Box>
               <Rightbar />

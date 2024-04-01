@@ -19,9 +19,9 @@ import MyContext from "./Context1";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Email } from "@mui/icons-material";
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isDoctor, setIsDoctor, isLoggedIn, setIsLoggedIn } =
     useContext(MyContext);
@@ -37,18 +37,18 @@ const LoginPage = () => {
       // Simulate a delay of 1 second
       setTimeout(() => {
         // Check if the username and password are valid
-        if (username === "yang" && password === "abc") {
+        if (email === "yang" && password === "abc") {
           // Simulate a successful login response
           console.log(
             "Login successful:",
-            username,
+            email,
             isDoctor ? "doctor" : "patient"
           );
           resolve({
             status: 200,
             data: {
               user: {
-                username: username,
+                username: email,
                 role: isDoctor ? "doctor" : "patient",
               },
             },
@@ -56,7 +56,7 @@ const LoginPage = () => {
           setIsLoggedIn(true);
           navigate(isDoctor ? "/doctor" : "/user");
         } else {
-          console.log(username, password);
+          console.log(email, password);
           // Simulate a failed login response
           resolve({
             status: 401,
@@ -80,11 +80,11 @@ const LoginPage = () => {
       });
 
     const formData = {
-      username: username,
+      username: email,
       password: password,
     };
     axios
-      .post("http://10.14.150.90:8000/patient/login/", { username, password })
+      .post("http://10.14.150.90:8000/patient/login/", { email, password })
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data);
@@ -139,15 +139,13 @@ const LoginPage = () => {
         >
           <TextField
             fullWidth
-            id="input-username"
-            label="Username"
+            id="input-emial"
+            label="Email Address"
             variant="outlined"
-            value={username} // Add this line
-            onChange={(e) => setUsername(e.target.value)}
+            value={email} // Add this line
+            onChange={(e) => setEmail(e.target.value)}
             InputProps={{
-              startAdornment: (
-                <AccountCircle sx={{ color: "action.active", mr: 1 }} />
-              ),
+              startAdornment: <Email sx={{ color: "action.active", mr: 1 }} />,
             }}
           />
           <TextField

@@ -120,8 +120,6 @@ const ManageBooking = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = {
-      selectedDepartment,
-      otherCondition,
       selectedTimes, // Add this line
     };
 
