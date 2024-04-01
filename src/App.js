@@ -22,6 +22,8 @@ import Admin from "./admin/Admin";
 import RegisterDoctor from "./admin/DoctorRegister";
 import MessageRespond from "./admin/MessageRespond";
 import Approval from "./admin/Approval";
+import PasswordChangeForm from "./user/Password";
+import UpdateContact from "./user/Contact";
 
 function App() {
   const [isDoctor, setIsDoctor] = useState(false);
@@ -65,6 +67,12 @@ function App() {
                   <Route path="/registerDoctor" element={<RegisterDoctor />} />
                   <Route path="/messageRespond" element={<MessageRespond />} />
                   <Route path="/userApproval" element={<Approval />} />
+                  <Route path="/updateContact" element={<UpdateContact />} />
+
+                  <Route
+                    path="/changePassword"
+                    element={<PasswordChangeForm />}
+                  />
                 </Routes>
               </Box>
               <Rightbar />

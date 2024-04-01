@@ -61,12 +61,20 @@ const Welcome = () => {
               Booking Appointment
             </Button>
             <Button
+              variant="contained"
+              color="primary"
+              sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
+              onClick={() => navigate("/changePassword")}
+            >
+              Change Password
+            </Button>
+            <Button
               variant="outlined"
               color="primary"
               sx={{ fontSize: "1.1rem", px: 3, py: 1, ml: 2 }} // Increase padding and font size, add margin left for spacing
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/updateContact")}
             >
-              history
+              Update Contact
             </Button>
 
             <Button
