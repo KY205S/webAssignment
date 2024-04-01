@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 
 const Rightbar = () => {
   return (
-    <Box flex={3} p={0} sx={{ display: { xs: "none", sm: "block" } }}>
+    <Box flex={2} p={0} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box position={"fixed"}>
         <List
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}

@@ -64,9 +64,9 @@ const Welcome = () => {
               variant="outlined"
               color="primary"
               sx={{ fontSize: "1.1rem", px: 3, py: 1, ml: 2 }} // Increase padding and font size, add margin left for spacing
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/upcomingBooking")}
             >
-              Register
+              Check Upcoming Booking
             </Button>
 
             <Button
@@ -75,7 +75,7 @@ const Welcome = () => {
               sx={{ fontSize: "1.1rem", px: 3, py: 1 }} // Increase padding and font size
               onClick={() => navigate("/manageBooking")}
             >
-              manage
+              Management Booking
             </Button>
           </Stack>
         </CardActions>

@@ -21,6 +21,7 @@ import { Container, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import App from "../App";
 import { useEffect, useState } from "react";
+import Tooltip from "@mui/material/Tooltip";
 
 import {
   Table,
@@ -39,7 +40,7 @@ const cellStyle = {
   // Add any other style properties to align header and value
 };
 
-const Arrangement = () => {
+const UpcomingBooking = () => {
   const navigate = useNavigate();
 
   const handleApprove = (userId) => {
@@ -56,7 +57,7 @@ const Arrangement = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3001/arrangement")
+    fetch("http://localhost:3001/upcoming")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -75,7 +76,7 @@ const Arrangement = () => {
   }, []);
 
   return (
-    <Box flex={9} p={2}>
+    <Box flex={11} p={3}>
       <Card sx={{ marginLeft: 5 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -86,25 +87,37 @@ const Arrangement = () => {
                 <TableCell align="left">Date</TableCell>
                 <TableCell align="center">Time</TableCell>
 
-                <TableCell align="center">Department</TableCell>
-                <TableCell align="center">Doctor</TableCell>
+                <TableCell align="center">Phone Number</TableCell>
+                <TableCell align="center">Symptom</TableCell>
                 <TableCell align="center">Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {users.map((user) => (
                 <TableRow
-                  key={user.name}
+                  key={user.client}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {user.name}
+                    {user.client}
                   </TableCell>
                   <TableCell align="right">{user.date}</TableCell>
 
                   <TableCell align="right">{user.time}</TableCell>
-                  <TableCell align="right">{user.department}</TableCell>
-                  <TableCell align="right">{user.doctor}</TableCell>
+                  <TableCell align="right">{user.phone}</TableCell>
+                  <TableCell align="right" style={{ maxWidth: "300px" }}>
+                    <Tooltip title={user.symptom}>
+                      <div
+                        style={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {user.symptom}
+                      </div>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell align="right">
                     <Button variant="contained" color="success">
                       Confrim
@@ -137,4 +150,4 @@ const Arrangement = () => {
   );
 };
 
-export default Arrangement;
+export default UpcomingBooking;

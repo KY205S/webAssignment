@@ -24,6 +24,7 @@ import MessageRespond from "./admin/MessageRespond";
 import Approval from "./admin/Approval";
 import PasswordChangeForm from "./user/Password";
 import UpdateContact from "./user/Contact";
+import UpcomingBooking from "./doctor/UpcomingBooking";
 
 function App() {
   const [isDoctor, setIsDoctor] = useState(false);
@@ -68,6 +69,10 @@ function App() {
                   <Route path="/messageRespond" element={<MessageRespond />} />
                   <Route path="/userApproval" element={<Approval />} />
                   <Route path="/updateContact" element={<UpdateContact />} />
+                  <Route
+                    path="/upcomingBooking"
+                    element={<UpcomingBooking />}
+                  />
 
                   <Route
                     path="/changePassword"

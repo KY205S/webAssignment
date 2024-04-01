@@ -27,5 +27,35 @@
       "firstName": "xiba",
       "phoneNumber": "1940841"
     }
+  ],
+
+  "arrangement": [
+    {
+      "name": "kaiyan yang",
+      "date": "2024-12-12",
+      "time": "12:00",
+      "email": "mpse84@153.com",
+      "doctor": "wang",
+      "department": "kidney disease"
+    }
+  ],
+
+  "upcoming": [
+    {
+      "client": "kaiyan yang",
+      "date": "2024-12-12",
+      "time": "12:00",
+      "symptom": "feeling very upset, uncomfortable with fever, vomit and diarrhea symptoms. Unable to fall asleep at night, etc, need to see a doctor as soon as possible",
+      "phone": 1314131
+    }
+  ],
+
+  "bookingM": [
+    { "date": "4/5/2024", "time": "09:00" },
+    { "date": "4/5/2024", "time": "09:30" },
+    { "date": "4/4/2024", "time": "10:00" },
+    { "date": "4/4/2024", "time": "10:30" },
+    { "date": "4/4/2024", "time": "11:00" },
+    { "date": "4/4/2024", "time": "11:30" }
   ]
 }

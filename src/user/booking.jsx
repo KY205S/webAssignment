@@ -17,6 +17,7 @@ import { Grid } from "@mui/material";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { ToggleButton, ToggleButtonGroup, Stack } from "@mui/material";
 import { Paper } from "@mui/material";
+import { useEffect } from "react";
 
 function getFormattedDateRange() {
   const currentDate = new Date();
@@ -38,8 +39,29 @@ function getFormattedDateRange() {
 const Booking = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [users, setUsers] = useState([]);
 
-  const days = ["Sunday", "Monday", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("http://localhost:3001/bookingM")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched data:", data);
+        setUsers(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
+  }, []);
 
   const dates = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
