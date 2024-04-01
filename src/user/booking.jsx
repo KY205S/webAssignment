@@ -38,10 +38,15 @@ function getFormattedDateRange() {
 
 const Booking = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedTime, setSelectedTime] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [fetchedData, setData] = useState([]);
+  const [appointments, setAppointments] = useState({});
+  const [selectedTime, setSelectedTime] = useState(null);
+  const handleSelectTime = (date, time) => {
+    setSelectedTime({ date, time });
+  };
+  // OR
 
   useEffect(() => {
     setIsLoading(true);
@@ -54,7 +59,7 @@ const Booking = () => {
       })
       .then((data) => {
         console.log("Fetched data:", data);
-        setUsers(data);
+        setData(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -63,28 +68,34 @@ const Booking = () => {
       });
   }, []);
 
-  const dates = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() + i + 1);
-    return date.toLocaleDateString("en-US");
-  });
-  const times = [
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-  ];
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("http://localhost:3001/bookingM")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const organizedData = data.reduce((acc, currentValue) => {
+          const { date, times } = currentValue;
+          if (!acc[date]) {
+            acc[date] = [];
+          }
+          acc[date].push(...times);
+          return acc;
+        }, {});
 
-  const handleSelectTime = (time) => {
-    setSelectedTime(time);
-  };
+        setAppointments(organizedData);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
+  }, []);
+
   const handleSelect = (department) => {
     setSelectedDepartment(department);
   };
@@ -117,6 +128,14 @@ const Booking = () => {
     console.log(formData);
     console.log("Form submitted");
   };
+
+  const isTimeSelected = (date, time) => {
+    return (
+      selectedTime && selectedTime.date === date && selectedTime.time === time
+    );
+  };
+
+  // Check if a time is selected
 
   return (
     <div>
@@ -316,7 +335,7 @@ const Booking = () => {
                     style={{ maxWidth: "100px", marginTop: "20px" }}
                   />
                   <Typography variant="h5" component="h1" sx={{ mt: 2 }}>
-                    Personal Information
+                    Available Booking Time
                   </Typography>
                 </Box>
                 <CardContent
@@ -329,23 +348,21 @@ const Booking = () => {
                 >
                   <Paper elevation={3} sx={{ padding: 2 }}>
                     <Typography variant="h6" align="center" gutterBottom>
-                      {getFormattedDateRange()}
+                      Your Date Range Here
                     </Typography>
                     <Grid container spacing={2}>
-                      {dates.map((day, index) => (
-                        <Grid item xs={12} sm key={day}>
-                          <Typography variant="subtitle2" gutterBottom>
-                            {day}
-                          </Typography>
+                      {Object.entries(appointments).map(([date, times]) => (
+                        <Grid item xs={12} sm={2} key={date}>
+                          <Typography variant="h6">{date}</Typography>
                           {times.map((time) => (
                             <Button
                               key={time}
                               variant={
-                                selectedTime === time + day
+                                isTimeSelected(date, time)
                                   ? "contained"
                                   : "outlined"
                               }
-                              onClick={() => handleSelectTime(time + day)}
+                              onClick={() => handleSelectTime(date, time)}
                               sx={{ margin: "4px", width: "64px" }}
                             >
                               {time}

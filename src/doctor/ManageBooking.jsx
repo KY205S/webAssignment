@@ -118,12 +118,37 @@ const ManageBooking = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Transform selectedTimes into an object with dates as keys and times as values
+    const groupedByDate = selectedTimes.reduce((acc, currentTime) => {
+      // Destructure date and time from the current item
+      const { date, time } = currentTime;
+
+      // If the date doesn't exist in the accumulator, initialize it with an empty array
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+
+      // Append the current time to the array for the current date
+      acc[date].push(time);
+      return acc;
+    }, {});
+
+    // Now transform this object into an array of objects with date and times properties
+    const formattedSelectedTimes = Object.entries(groupedByDate).map(
+      ([date, times]) => ({
+        date,
+        times,
+      })
+    );
+
     const formData = {
-      selectedTimes, // Add this line
+      // This now represents your data as an array of objects with date and times properties
+      selectedTimes: formattedSelectedTimes,
     };
 
     // Here you can call an API or perform other actions with the formData
-    console.log(formData);
+    console.log("Transformed formData", formData);
     console.log("Form submitted");
   };
 
