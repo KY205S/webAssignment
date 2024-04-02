@@ -11,9 +11,7 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import { useState } from "react";
 import MyContext from "./Context1";
 import { useContext, useEffect } from "react";
@@ -30,6 +28,30 @@ const LoginPage = () => {
   useEffect(() => {
     setIsLoggedIn(false);
     setIsDoctor(false);
+  }, []);
+
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("http://localhost:3001/login")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched data:", data);
+        setUsers(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
   }, []);
   const handleLogin = () => {
     // Simulate server-side data fetching
@@ -80,24 +102,48 @@ const LoginPage = () => {
       });
 
     const formData = {
-      username: email,
+      email: email,
       password: password,
     };
-    axios
-      .post("http://10.14.150.90:8000/patient/login/", { email, password })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data);
-          console.log(response.data.role);
 
-          // Here you can handle the successful login, e.g. redirect the user to another page
-        } else {
-          console.log("Login failed:", response.message);
+    axios
+      .post("http://localhost:3001/login", formData)
+      .then((response) => {
+        console.log(response.data);
+
+        // Check the response data for specific fields and alert if any are invalid (0)
+        if (response.data.email === "0") {
+          alert("Please input your valid email address");
+        }
+        if (response.data.password === "0") {
+          alert("Please input your valid password");
+        }
+
+        if (response.data.email === "1" && response.data.password === "1") {
+          alert("You have successfully registered");
+          navigate("/home");
+          setIsLoggedIn(true);
         }
       })
       .catch((error) => {
         console.error("Error posting data:", error);
+        alert("An error occurred while submitting your registration.");
       });
+    // axios
+    //   .post("http://10.14.150.90:8000/patient/login/", formData)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       console.log(response.data);
+    //       console.log(response.data.role);
+
+    //       // Here you can handle the successful login, e.g. redirect the user to another page
+    //     } else {
+    //       console.log("Login failed:", response.message);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error posting data:", error);
+    //   });
   };
 
   return (

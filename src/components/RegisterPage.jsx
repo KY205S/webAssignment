@@ -33,7 +33,6 @@ const RegisterPage = () => {
 
   const [step, setStep] = useState(1);
   //Save data
-  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -47,14 +46,11 @@ const RegisterPage = () => {
 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(false);
 
   const handleIdentityChange = (event) => {
     setIdentityNumber(event.target.value);
   };
-  const handleUserNameChange = (event) => {
-    setUserName(event.target.value);
-  };
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -90,14 +86,6 @@ const RegisterPage = () => {
     setBirthYear(event.target.value);
   };
 
-  const handleNext = () => {
-    setStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-  };
-
-  const handleBack = () => {
-    setStep((prevStep) => (prevStep > 1 ? prevStep - 1 : prevStep));
-  };
-
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
     // If confirmPassword is not empty, check if both passwords are the same
@@ -118,13 +106,35 @@ const RegisterPage = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("http://localhost:3001/approval")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched data:", data);
+        setUsers(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const formData = {
       identityNumber,
-      userName,
       email,
       password,
       firstName,
@@ -146,36 +156,85 @@ const RegisterPage = () => {
     }
 
     axios
-      .post("http://10.14.150.90:8000/register/", formData)
+      .post("http://localhost:3001/approval", formData)
       .then((response) => {
         console.log(response.data);
-        alert("You have successfully registered");
-        navigate("/login");
+
+        // Check the response data for specific fields and alert if any are invalid (0)
+        if (response.data.identityNumber === "0") {
+          alert("Please input a valid identity number");
+        }
+
+        if (response.data.email === "") {
+          alert("Please input a valid email address");
+        }
+        if (response.data.password === "0") {
+          alert("Please input a valid password");
+        }
+        if (response.data.phoneNumber === "0") {
+          alert("Please input a valid phone number");
+        }
+        if (
+          response.data.identityNumber === "1" &&
+          response.data.email === "1" &&
+          response.data.password === "1" &&
+          response.data.phoneNumber === "1"
+        ) {
+          // If all fields are valid, display success and navigate to the login page
+          alert("You have successfully registered");
+          navigate("/login"); // replace "/login" with your login route
+        }
       })
       .catch((error) => {
         console.error("Error posting data:", error);
+        alert("An error occurred while submitting your registration.");
       });
-
-    // Here you can call an API or perform other actions with the formData
-    console.log(formData);
-    console.log("Form submitted");
   };
 
-  const [data, setData] = useState(null);
+  // axios
+  //     .post("http://localhost:3001/approval", formData)
+  //     .then((response) => {
+  //       console.log(response.data);
 
-  useEffect(() => {
-    // Adjust the URL based on your server's actual endpoint and port
-    const url = "http://10.14.150.90:8000/register/";
+  //       // Check the response data for specific fields and alert if any are invalid (0)
+  //       if (response.data.identityNumber === "0") {
+  //         alert("Please input a valid identity number");
+  //       }
 
-    axios
-      .post("http://10.14.150.90:8000/register/", {
-        // Your payload goes here. For example, user registration data.
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
+  //       if (response.data.email === "") {
+  //         alert("Please input a valid email address");
+  //       }
+  //       if (response.data.password === "0") {
+  //         alert("Please input a valid password");
+  //       }
+  //       if (response.data.phoneNumber === "0") {
+  //         alert("Please input a valid phone number");
+  //       }
+  //       if (
+  //         response.data.identityNumber === "1" &&
+  //         response.data.email === "1" &&
+  //         response.data.password === "1" &&
+  //         response.data.phoneNumber === "1"
+  //       ) {
+  //         // If all fields are valid, display success and navigate to the login page
+  //         alert("You have successfully registered");
+  //         navigate("/login"); // replace "/login" with your login route
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error posting data:", error);
+  //       alert("An error occurred while submitting your registration.");
+  //     });
+  // axios
+  //   .post("http://10.14.150.90:8000/register/", formData)
+  //   .then((response) => {
+  //     console.log(response.data);
+  //     alert("You have successfully registered");
+  //     navigate("/login");
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error posting data:", error);
+  //   });
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -236,19 +295,7 @@ const RegisterPage = () => {
                       ),
                     }}
                   />
-                  <TextField
-                    fullWidth
-                    id="input-username"
-                    label="User Name"
-                    variant="outlined"
-                    value={userName}
-                    onChange={handleUserNameChange}
-                    InputProps={{
-                      startAdornment: (
-                        <AccountCircle sx={{ color: "action.active", mr: 1 }} />
-                      ),
-                    }}
-                  />
+
                   <TextField
                     fullWidth
                     id="input-email"

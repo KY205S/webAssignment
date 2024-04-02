@@ -1,10 +1,69 @@
 {
-  "posts": [{ "id": 1, "title": "json-server", "author": "typicode" }],
-
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "history": [],
+  "login": [
+    {
+      "email": "json-server",
+      "password": "typicode"
+    },
+    {
+      "email": "json-server",
+      "password": "typicode"
+    },
+    {
+      "email": "json-server",
+      "password": "typicode"
+    },
+    {
+      "id": "8e2e",
+      "username": "999",
+      "password": "999"
+    },
+    {
+      "id": "adea",
+      "username": "999",
+      "password": "999"
+    },
+    {
+      "id": "e66d",
+      "username": "hjhj",
+      "password": "999"
+    },
+    {
+      "id": "9b3b",
+      "username": "0",
+      "password": "0"
+    },
+    {
+      "id": "34a8",
+      "email": "0",
+      "password": "0"
+    },
+    {
+      "id": "64e5",
+      "email": "1",
+      "password": "1"
+    },
+    {
+      "id": "745b",
+      "email": "1",
+      "password": "1"
+    },
+    {
+      "id": "3729",
+      "email": "yang",
+      "password": "abc"
+    }
+  ],
   "approval": [
     {
-      "userID": 1,
-
+      "id": 1,
       "identity": 1919423213,
       "email": "mpse84@153.com",
       "lastName": "yang",
@@ -12,7 +71,7 @@
       "phoneNumber": "13379791949"
     },
     {
-      "userID": 2,
+      "id": 2,
       "identity": 1314131,
       "email": "mp4224@153.com",
       "lastName": "fzd",
@@ -20,15 +79,34 @@
       "phoneNumber": "1940841"
     },
     {
-      "userID": 3,
+      "id": 3,
       "identity": 1314131,
       "email": "mp4224@153.com",
       "lastName": "fzd",
       "firstName": "xiba",
       "phoneNumber": "1940841"
+    },
+    {
+      "id": 4,
+      "identity": 1314131,
+      "email": "mp4224@153.com",
+      "lastName": "fzd",
+      "firstName": "xiba",
+      "phoneNumber": "1940841"
+    },
+    {
+      "id": 4,
+      "approved": 1
+    },
+    {
+      "id": 2,
+      "approved": 0
+    },
+    {
+      "id": 1,
+      "approved": 0
     }
   ],
-
   "arrangement": [
     {
       "name": "kaiyan yang",
@@ -39,7 +117,6 @@
       "department": "kidney disease"
     }
   ],
-
   "upcoming": [
     {
       "client": "kaiyan yang",
@@ -49,52 +126,77 @@
       "phone": 1314131
     }
   ],
-
   "bookingM": [
     {
       "date": "4/12/2024",
-      "times": ["09:00", "09:30", "10:00"]
+      "times": [
+        "09:00",
+        "09:30",
+        "10:00"
+      ]
     },
     {
       "date": "4/10/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     },
-
     {
       "date": "4/11/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     },
     {
       "date": "4/13/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     },
     {
       "date": "4/14/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     },
     {
       "date": "4/15/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     },
     {
       "date": "4/16/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     },
     {
       "date": "4/17/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
-    },
-    {
-      "date": "4/18/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
-    },
-    {
-      "date": "4/19/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
-    },
-    {
-      "date": "4/20/2024",
-      "times": ["09:00", "10:00", "10:30", "11:00"]
+      "times": [
+        "09:00",
+        "10:00",
+        "10:30",
+        "11:00"
+      ]
     }
   ]
 }

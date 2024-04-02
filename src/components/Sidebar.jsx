@@ -215,6 +215,23 @@ const RegularSidebar = () => {
           </Link>
           <Divider />
 
+          <Link
+            to="/message"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon></ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </Link>
+          <Divider />
+
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
