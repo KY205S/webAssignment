@@ -21,24 +21,30 @@ import {
   TextField,
 } from "@mui/material";
 import { ErrorOutline } from "@mui/icons-material";
-import axios from "axios";
-import { baseUrl } from '../components/Ipconfig';
+import AuthService from "../components/AuthService";
 
 const AppointmentListPage = () => {
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [currentAppointmentId, setCurrentAppointmentId] = useState(null);
+  const [currentAppointmentNumber, setCurrentAppointmentNumber] = useState(null);
   const [currentStatus, setCurrentStatus] = useState("");
   const [reason, setReason] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(`${baseUrl}/doctorappointmentslist`)
+    AuthService.makeAuthRequest("http://10.14.150.220:8000/doctorappointmentlist", {
+      method: 'GET',
+    })
       .then((response) => {
-        setAppointments(response.data);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setAppointments(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -59,8 +65,8 @@ const AppointmentListPage = () => {
     return { color: statusColors[status.toLowerCase()] || "inherit" };
   };
 
-  const handleOpenDialog = (appointmentId, status) => {
-    setCurrentAppointmentId(appointmentId);
+  const handleOpenDialog = (appointmentNumber, status) => {
+    setCurrentAppointmentNumber(appointmentNumber);
     setCurrentStatus(status);
     setReason("");
     setOpenDialog(true);
@@ -74,17 +80,28 @@ const AppointmentListPage = () => {
     setReason(event.target.value);
   };
 
-  const handleStatusChange = (appointmentId, newStatus) => {
-    axios
-      .patch(`http://localhost:3001/doctorappointmentslist/${appointmentId}`, {
+  const handleStatusChange = (appointmentNumber, newStatus) => {
+    AuthService.makeAuthRequest(`http://10.14.150.220:8000/doctorappointmentlist/${appointmentNumber}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         status: newStatus,
-        reason: reason || "No reason provided",
-      })
+        advice: reason || "No reason provided",
+      }),
+    })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((updatedAppointment) => {
         setAppointments((currentAppointments) =>
           currentAppointments.map((appointment) =>
-            appointment.id === appointmentId
-              ? { ...appointment, status: newStatus, reason }
+            appointment.appointment_number === appointmentNumber
+              ? { ...appointment, status: newStatus, advice: reason }
               : appointment
           )
         );
@@ -95,11 +112,11 @@ const AppointmentListPage = () => {
   };
 
   const handleDialogSubmit = () => {
-    handleStatusChange(currentAppointmentId, currentStatus);
+    handleStatusChange(currentAppointmentNumber, currentStatus);
     handleCloseDialog();
   };
 
-  const renderStatusButtons = (status, id) => {
+  const renderStatusButtons = (status, appointmentNumber) => {
     switch (status.toLowerCase()) {
       case "pending confirmation":
         return (
@@ -107,14 +124,14 @@ const AppointmentListPage = () => {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => handleStatusChange(id, "Accepted")}
+              onClick={() => handleStatusChange(appointmentNumber, "Accepted")}
             >
               Accept
             </Button>
             <Button
               variant="outlined"
               color="error"
-              onClick={() => handleOpenDialog(id, "Refused")}
+              onClick={() => handleOpenDialog(appointmentNumber, "Refused")}
               sx={{ ml: 1 }}
             >
               Refuse
@@ -127,14 +144,14 @@ const AppointmentListPage = () => {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => handleStatusChange(id, "Currently consulting")}
+              onClick={() => handleStatusChange(appointmentNumber, "Currently consulting")}
             >
               Start
             </Button>
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() => handleOpenDialog(id, "Cancelled")}
+              onClick={() => handleOpenDialog(appointmentNumber, "Cancelled")}
               sx={{ ml: 1 }}
             >
               Cancel
@@ -146,7 +163,7 @@ const AppointmentListPage = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleStatusChange(id, "Completed")}
+            onClick={() => handleStatusChange(appointmentNumber, "Completed")}
           >
             Complete
           </Button>
@@ -156,10 +173,10 @@ const AppointmentListPage = () => {
     }
   };
 
-  const renderReasonIcon = (status, reason) => {
+  const renderReasonIcon = (status, advice) => {
     if (status.toLowerCase() === "refused" || status.toLowerCase() === "cancelled") {
       return (
-        <Tooltip title={`Reason: ${reason}`} arrow>
+        <Tooltip title={`Advice: ${advice}`} arrow>
           <IconButton size="small" color="error">
             <ErrorOutline />
           </IconButton>
@@ -182,7 +199,6 @@ const AppointmentListPage = () => {
                 <TableCell align="center">Appointment Number</TableCell>
                 <TableCell align="center">Patient Name</TableCell>
                 <TableCell align="center">Consultation Time</TableCell>
-                <TableCell align="center">Appointed Doctor</TableCell>
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Description</TableCell>
                 <TableCell align="center">Status</TableCell>
@@ -192,13 +208,12 @@ const AppointmentListPage = () => {
             <TableBody>
               {appointments.map((appointment) => (
                 <TableRow
-                  key={appointment.id}
+                  key={appointment.appointment_number}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell align="center">{appointment.number}</TableCell>
-                  <TableCell align="center">{appointment.patientName}</TableCell>
+                  <TableCell align="center">{appointment.appointment_number}</TableCell>
+                  <TableCell align="center">{appointment.patient_name}</TableCell>
                   <TableCell align="center">{appointment.time}</TableCell>
-                  <TableCell align="center">{appointment.doctor}</TableCell>
                   <TableCell align="center">{appointment.location}</TableCell>
                   <TableCell align="center">
                     <Tooltip title={appointment.description} arrow>
@@ -218,10 +233,10 @@ const AppointmentListPage = () => {
                   </TableCell>
                   <TableCell align="center" style={getStatusStyles(appointment.status)}>
                     {appointment.status}
-                    {renderReasonIcon(appointment.status, appointment.reason)}
+                    {renderReasonIcon(appointment.status, appointment.advice)}
                   </TableCell>
                   <TableCell align="center">
-                    {renderStatusButtons(appointment.status, appointment.id)}
+                    {renderStatusButtons(appointment.status, appointment.appointment_number)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -249,7 +264,6 @@ const AppointmentListPage = () => {
             value={reason}
             onChange={handleReasonChange}
             sx={{ width: 500 }}
-            //inputProps={{ style: { height: "100px" } }}
           />
         </DialogContent>
         <DialogActions>

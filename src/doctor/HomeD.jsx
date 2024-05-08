@@ -15,6 +15,7 @@ import { Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AuthService from "../components/AuthService";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -23,6 +24,10 @@ const Welcome = () => {
   const [error, setError] = useState(null);
   useEffect(() => {
     setIsLoading(true);
+    // AuthService.makeAuthRequest("http://10.14.150.220:8000/profileD", {
+//   method: 'GET'
+//   })
+
     axios
       .get("http://localhost:3001/profileD")
       .then((response) => {

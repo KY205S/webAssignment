@@ -22,6 +22,8 @@ import axios from "axios";
 
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import { baseUrl } from '../components/Ipconfig';
+
 
 const dates = Array.from({ length: 7 }, (_, i) => {
   const date = new Date();
@@ -156,7 +158,7 @@ const RegisterPage = () => {
     }
 
     axios
-      .post("http://10.14.150.90:8000/register/", formData)
+      .post("http://10.14.150.220:8000/register/", formData)
       .then((response) => {
         console.log(response.data);
         console.log(response);

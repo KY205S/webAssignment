@@ -364,7 +364,7 @@
       "department": "kidney"
     }
   ],
-  "doctorappointmentslist": [
+  "doctorappointmentlist": [
     {
       "number": "Appt000001",
       "patientName": "Xin Shen",
@@ -422,7 +422,7 @@
       "description": "I am uncomfortable"
     }
   ],
-  "patientappointmentslist": [
+  "patientappointmentlist": [
     {
       "number": "Appt000001",
       "patientName": "Xin Shen",
@@ -526,31 +526,55 @@
 
 
 
-  "messages": [
-    {
-      "username": "Admin",
-      "message": "Hello! How can I help you?",
-      "timestamp": "2024-05-10T09:00:00.000Z"
-    },
-    {
-      "username": "Xin",
-      "message": "I have a question about my appointment.",
-      "timestamp": "2024-05-10T09:05:00.000Z"
-    },
-    {
-      "username": "Admin",
-      "message": "Sure, go ahead.",
-      "timestamp": "2024-05-10T09:10:00.000Z"
-    },
-    {
-      "username": "Xin",
-      "message": "Can I reschedule my appointment?",
-      "timestamp": "2024-05-10T09:15:00.000Z"
-    },
-    {
-      "username": "Admin",
-      "message": "Yes, you can. Please let me know your preferred date and time.",
-      "timestamp": "2024-05-10T09:20:00.000Z"
-    }
+  "my-conversation": [
+        {
+    "conversation_id": "chat20240507Mnvma",
+    "patient": 3,
+    "messages": [
+        {
+            "id": 1,
+            "text": "Hello, Im patient.",
+            "sender": 3,
+            "sender_type": "Patient",
+            "created_at": "2024-05-07T22:28:21.671104Z"
+        },
+        {
+            "id": 2,
+            "text": "Hello, Im patient.",
+            "sender": 3,
+            "sender_type": "Patient",
+            "created_at": "2024-05-07T22:28:32.152587Z"
+        },
+        {
+            "id": 3,
+            "text": "Hello, Im patient.",
+            "sender": 3,
+            "sender_type": "Patient",
+            "created_at": "2024-05-07T22:28:33.431378Z"
+        },
+        {
+            "id": 4,
+            "text": "Hello, how can I help you today?",
+            "sender": 1,
+            "sender_type": "Admin",
+            "created_at": "2024-05-07T22:29:59.224794Z"
+        },
+        {
+            "id": 5,
+            "text": "Hello, how can I help you today?",
+            "sender": 1,
+            "sender_type": "Admin",
+            "created_at": "2024-05-07T22:30:00.411121Z"
+        },
+        {
+            "id": 6,
+            "text": "Hello, how can I help you today?",
+            "sender": 1,
+            "sender_type": "Admin",
+            "created_at": "2024-05-07T22:30:01.216750Z"
+        }
+    ],
+    "created_at": "2024-05-07T22:19:51.321393Z"
+}
   ]
 }

@@ -1,21 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import axios from "axios";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import AuthService from "../components/AuthService";
+import { baseUrl } from '../components/Ipconfig';
 
 const Approval = () => {
   const navigate = useNavigate();
@@ -24,28 +15,14 @@ const Approval = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ... other imports
-
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get("http://localhost:3001/approval")
-      .then((response) => {
-        console.log("Get data:", response.data);
-        setUsers(response.data);
-        setIsLoading(false);
+      .get(`${baseUrl}/approval`, {
+        headers: {
+          Authorization: `Bearer ${AuthService.getToken()}`
+        }
       })
-      .catch((error) => {
-        console.log("Error:", error);
-        setError(error.message);
-        setIsLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get("http://10.14.150.90:8000/approval/")
       .then((response) => {
         console.log("Get data:", response.data);
         setUsers(response.data);
@@ -70,7 +47,11 @@ const Approval = () => {
 
     // Send the data to the backend
     axios
-      .post("http://10.14.150.90:8000/confirm-registration/", postData)
+      .post(`${baseUrl}/confirm-registration/`, postData, {
+        headers: {
+          Authorization: `Bearer ${AuthService.getToken()}`
+        }
+      })
       .then((response) => {
         console.log("Response from backend:", response.data);
 
@@ -106,6 +87,7 @@ const Approval = () => {
       handleApprovalChange(id, "Declined");
     }
   };
+
   return (
     <Box flex={9} p={2}>
       <Card sx={{ marginLeft: 5 }}>
@@ -114,7 +96,6 @@ const Approval = () => {
             <TableHead>
               <TableRow>
                 <TableCell align="center">User ID</TableCell>
-
                 <TableCell align="left">Identity</TableCell>
                 <TableCell align="center">E-mail</TableCell>
                 <TableCell align="center">Last Name</TableCell>
@@ -132,7 +113,6 @@ const Approval = () => {
                     {user.id}
                   </TableCell>
                   <TableCell align="right">{user.identity}</TableCell>
-
                   <TableCell align="right">{user.email}</TableCell>
                   <TableCell align="right">{user.lastName}</TableCell>
                   <TableCell align="right">{user.firstName}</TableCell>
@@ -176,7 +156,7 @@ const Approval = () => {
           py: 1,
           marginLeft: 50,
           marginTop: 10,
-        }} // Increase padding and font size
+        }}
         onClick={() => navigate("/admin")}
       >
         Back

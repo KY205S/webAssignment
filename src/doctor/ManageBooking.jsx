@@ -7,6 +7,7 @@ import { Grid } from "@mui/material";
 import axios from "axios";
 
 import { Paper } from "@mui/material";
+import AuthService from "../components/AuthService";
 
 function getFormattedDateRange() {
   const currentDate = new Date();
@@ -18,7 +19,7 @@ function getFormattedDateRange() {
   const startDate = new Date(currentYear, currentMonth, currentDayOfMonth + 1);
   const endDate = new Date(currentYear, currentMonth, currentDayOfMonth + 7);
 
-  const options = { year: "numeric", month: "short", day: "numeric" };
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
   const startDateFormatted = startDate.toLocaleDateString("en-US", options);
   const endDateFormatted = endDate.toLocaleDateString("en-US", options);
 
@@ -35,7 +36,7 @@ function getFormattedDateRange2() {
   const startDate = new Date(currentYear, currentMonth, currentDayOfMonth + 8);
   const endDate = new Date(currentYear, currentMonth, currentDayOfMonth + 14);
 
-  const options = { year: "numeric", month: "short", day: "numeric" };
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
   const startDateFormatted = startDate.toLocaleDateString("en-US", options);
   const endDateFormatted = endDate.toLocaleDateString("en-US", options);
 
@@ -44,16 +45,16 @@ function getFormattedDateRange2() {
 
 const ManageBooking = () => {
   const dates = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() + i + 1);
-    return date.toLocaleDateString("en-US");
-  });
+  const date = new Date();
+  date.setDate(date.getDate() + i + 1);
+  return date.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: 'numeric' });
+});
 
-  const nextDates = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() + i + 8); // Start from 8 days later, which is the same day next week
-    return date.toLocaleDateString("en-US");
-  });
+const nextDates = Array.from({ length: 7 }, (_, i) => {
+  const date = new Date();
+  date.setDate(date.getDate() + i + 8); // Start from 8 days later, which is the same day next week
+  return date.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: 'numeric' });
+});
   const times = [
     "09:00",
     "09:30",
@@ -127,7 +128,7 @@ const ManageBooking = () => {
     // Now transform this object into an array of objects with date and times properties
     const formattedSelectedTimes = Object.entries(groupedByDate).map(
       ([date, times]) => ({
-        date,
+        date: date.split('/').reverse().join('-'),
         times,
       })
     );
@@ -137,21 +138,30 @@ const ManageBooking = () => {
       selectedTimes: formattedSelectedTimes,
     };
 
-    axios
-      .post("http://10.14.150.90:8000/schedule/1/", formData)
-      .then((response) => {
-        console.log(response.data);
-        alert("You have successfully registered");
+    AuthService.makeAuthRequest("http://10.14.150.220:8000/schedule/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData)
+})
+.then(async (response) => {
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-        // Check the response data for specific fields and alert if any are invalid (0)
-      })
-      .catch((error) => {
-        console.error("Error posting data:", error);
-        alert("An error occurred while submitting your registration.");
-      });
-    // Here you can call an API or perform other actions with the formData
-    console.log("Transformed formData", formData);
-    console.log("Form submitted");
+  const responseData = await response.json();
+  console.log(responseData);
+  alert("You have successfully registered");
+
+  // 检查响应数据中特定字段，并在发现无效字段时弹出警告
+  if (responseData.someField === "Invalid") {
+    alert("Invalid data detected!");
+  }
+})
+.catch((error) => {
+  console.error("Error posting data:", error);
+  alert("An error occurred while submitting your registration.");
+});
+
+console.log("Transformed formData", formData);
+console.log("Form submitted");
   };
 
   return (

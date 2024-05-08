@@ -12,8 +12,9 @@ import {
   Divider
 } from '@mui/material';
 import axios from "axios";
-import AuthService from "../components/AuthService";
 import './OnlineConsult.css';
+import AuthService from "../components/AuthService";
+import { baseUrl } from '../components/Ipconfig';
 
 const OnlineConsult = () => {
   const [messages, setMessages] = useState([]);
@@ -21,20 +22,24 @@ const OnlineConsult = () => {
 
   // 获取聊天记录
   useEffect(() => {
-    const fetchChatData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/messages');
-        setMessages(response.data);
-        //const response = await AuthService.makeAuthRequest('http://localhost:3001/messages');
-        // const data = await response.json();
-        // setMessages(data);
-      } catch (error) {
-        console.error('Error fetching chat data:', error);
-      }
-    };
+  const fetchChatData = async () => {
+    try {
+      const response = await AuthService.makeAuthRequest("http://10.14.150.220:8000/my-conversation/", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
-    fetchChatData();
-  }, []);
+      setMessages(response.data.messages);
+    } catch (error) {
+      console.error('Error fetching chat data:', error);
+    }
+  };
+
+  fetchChatData();
+}, []);
+
 
   // 发送消息
   const handleSendMessage = async () => {
@@ -43,22 +48,20 @@ const OnlineConsult = () => {
     }
 
     const messageData = {
-      message: newMessage,
-      timestamp: new Date().toISOString()
+      text: newMessage,
+      sender_type: "Patient", // Assuming the front-end is always from the patient's perspective
+      created_at: new Date().toISOString()
     };
 
     try {
-      const response = await AuthService.makeAuthRequest('http://localhost:3001/sendMessage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(messageData)
-      });
-      const data = await response.json();
-      console.log('Message sent successfully', data);
-
-      setMessages([...messages, {...messageData, username: 'You'}]); // Assuming "You" as a placeholder for the username
+      const response = await AuthService.makeAuthRequest("http://10.14.150.220:8000/my-conversation/send/", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(messageData)
+    });
+      setMessages([...messages, messageData]);
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
@@ -72,11 +75,11 @@ const OnlineConsult = () => {
           <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '20px', textAlign: 'center' }}>Online Consultation Chat</Typography>
 
           <List style={{ flexGrow: 1, overflowY: 'auto', marginBottom: '10px' }}>
-            {messages.map((msg, index) => (
-              <React.Fragment key={index}>
-                <ListItem style={{ display: 'flex', flexDirection: 'row-reverse', padding: '10px 20px' }}>
-                  <Box className="chat-bubble right">
-                    <ListItemText primary={msg.message} secondary={new Date(msg.timestamp).toLocaleString()} />
+            {messages.map((msg) => (
+              <React.Fragment key={msg.id}>
+                <ListItem style={{ display: 'flex', flexDirection: msg.sender_type === 'Patient' ? 'row-reverse' : 'row', padding: '10px 20px' }}>
+                  <Box className={msg.sender_type === 'Patient' ? "chat-bubble right" : "chat-bubble left"}>
+                    <ListItemText primary={msg.text} secondary={new Date(msg.created_at).toLocaleString()} />
                   </Box>
                 </ListItem>
                 <Divider variant="fullWidth" component="li" />
@@ -106,9 +109,9 @@ const OnlineConsult = () => {
             </Button>
           </Box>
         </CardContent>
-      </Card>
-    </Box>
-  );
-};
+        </Card>
+      </Box>
+    );
+  };
 
 export default OnlineConsult;

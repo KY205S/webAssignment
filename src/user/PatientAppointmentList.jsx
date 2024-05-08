@@ -21,7 +21,7 @@ import {
   TextField,
 } from "@mui/material";
 import { ErrorOutline } from "@mui/icons-material";
-import axios from "axios";
+import AuthService from "../components/AuthService";
 
 const AppointmentListPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -32,12 +32,20 @@ const AppointmentListPage = () => {
   const [currentAppointmentId, setCurrentAppointmentId] = useState(null);
   const [reason, setReason] = useState("");
 
+  // 使用 useEffect 来获取并解析预约数据
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get("http://localhost:3001/patientappointmentslist")
+    AuthService.makeAuthRequest("http://10.14.150.220:8000/patientappointmentlist", {
+      method: "GET",
+    })
       .then((response) => {
-        setAppointments(response.data);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setAppointments(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -46,6 +54,7 @@ const AppointmentListPage = () => {
       });
   }, []);
 
+  // 为不同状态设置对应颜色
   const getStatusStyles = (status) => {
     const statusColors = {
       "pending confirmation": "#FFD700", // gold
@@ -58,39 +67,55 @@ const AppointmentListPage = () => {
     return { color: statusColors[status.toLowerCase()] || "inherit" };
   };
 
-  const handleDialogOpen = (appointmentId, newStatus) => {
-    setCurrentAppointmentId(appointmentId);
+  // 打开对话框输入状态和原因
+  const handleDialogOpen = (appointmentNumber, newStatus) => {
+    setCurrentAppointmentId(appointmentNumber);
     setCurrentStatus(newStatus);
     setReason("");
     setOpenDialog(true);
   };
 
+  // 关闭对话框
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
 
+  // 确认并更新预约状态
   const handleDialogConfirm = () => {
-    axios
-      .patch(`http://localhost:3001/patientappointmentslist/${currentAppointmentId}`, {
-        status: currentStatus,
-        reason: reason,
-      })
-      .then(() => {
-        setAppointments((currentAppointments) =>
-          currentAppointments.map((appointment) =>
-            appointment.id === currentAppointmentId
-              ? { ...appointment, status: currentStatus, reason: reason }
-              : appointment
-          )
-        );
-        setOpenDialog(false);
-      })
-      .catch((error) => {
-        console.error("Error updating appointment status:", error);
-      });
+  const requestBody = {
+    appointment_number: currentAppointmentId,
+    status: currentStatus,
+    doctor_advice: reason
   };
 
-  const renderStatusButtons = (status, id) => {
+  AuthService.makeAuthRequest(
+    "http://10.14.150.220:8000/update-appointment/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    }
+  )
+    .then(() => {
+      setAppointments((currentAppointments) =>
+        currentAppointments.map((appointment) =>
+          appointment.appointment_number === currentAppointmentId
+            ? { ...appointment, status: currentStatus, advice: reason }
+            : appointment
+        )
+      );
+      setOpenDialog(false);
+    })
+    .catch((error) => {
+      console.error("Error updating appointment status:", error);
+    });
+};
+
+
+  // 渲染取消按钮
+  const renderStatusButtons = (status, appointmentNumber) => {
     switch (status.toLowerCase()) {
       case "pending confirmation":
       case "accepted":
@@ -98,7 +123,7 @@ const AppointmentListPage = () => {
           <Button
             variant="outlined"
             color="secondary"
-            onClick={() => handleDialogOpen(id, "Cancelled")}
+            onClick={() => handleDialogOpen(appointmentNumber, "Cancelled")}
           >
             Cancel
           </Button>
@@ -108,10 +133,11 @@ const AppointmentListPage = () => {
     }
   };
 
-  const renderReasonIcon = (status, reason) => {
+  // 渲染显示原因的图标
+  const renderReasonIcon = (status, advice) => {
     if (status.toLowerCase() === "refused" || status.toLowerCase() === "cancelled") {
       return (
-        <Tooltip title={`Reason: ${reason}`} arrow>
+        <Tooltip title={`Reason: ${advice || "No reason provided"}`} arrow>
           <IconButton size="small" color="error">
             <ErrorOutline />
           </IconButton>
@@ -121,6 +147,7 @@ const AppointmentListPage = () => {
     return null;
   };
 
+  // 页面结构和布局
   return (
     <Box flex={4} p={2}>
       <Card>
@@ -132,9 +159,8 @@ const AppointmentListPage = () => {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Appointment Number</TableCell>
-                <TableCell align="center">Patient Name</TableCell>
+                <TableCell align="center">Doctor</TableCell>
                 <TableCell align="center">Consultation Time</TableCell>
-                <TableCell align="center">Appointed Doctor</TableCell>
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Description</TableCell>
                 <TableCell align="center">Status</TableCell>
@@ -144,13 +170,12 @@ const AppointmentListPage = () => {
             <TableBody>
               {appointments.map((appointment) => (
                 <TableRow
-                  key={appointment.id}
+                  key={appointment.appointment_number}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell align="center">{appointment.number}</TableCell>
-                  <TableCell align="center">{appointment.patientName}</TableCell>
+                  <TableCell align="center">{appointment.appointment_number || "N/A"}</TableCell>
+                  <TableCell align="center">{appointment.doctor_name}</TableCell>
                   <TableCell align="center">{appointment.time}</TableCell>
-                  <TableCell align="center">{appointment.doctor}</TableCell>
                   <TableCell align="center">{appointment.location}</TableCell>
                   <TableCell align="center">
                     <Tooltip title={appointment.description} arrow>
@@ -170,10 +195,10 @@ const AppointmentListPage = () => {
                   </TableCell>
                   <TableCell align="center" style={getStatusStyles(appointment.status)}>
                     {appointment.status}
-                    {renderReasonIcon(appointment.status, appointment.reason)}
+                    {renderReasonIcon(appointment.status, appointment.advice)}
                   </TableCell>
                   <TableCell align="center">
-                    {renderStatusButtons(appointment.status, appointment.id)}
+                    {renderStatusButtons(appointment.status, appointment.appointment_number)}
                   </TableCell>
                 </TableRow>
               ))}
