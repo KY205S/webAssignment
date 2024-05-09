@@ -10,6 +10,7 @@ import {
 import { Grid, Stack, Paper } from "@mui/material";
 import AuthService from "../components/AuthService";
 import { useNavigate } from "react-router-dom";
+import group13Logo from '../components/Group13-logo.jpg';
 
 const Booking = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -151,8 +152,9 @@ const Booking = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="h5" component="h1" sx={{ mt: 2 }}>
-                    Booking Page
+                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
+                  <Typography variant="h5" component="h1" sx={{mt: 2}}>
+                  Booking Page
                   </Typography>
                 </Box>
 
@@ -240,20 +242,21 @@ const Booking = () => {
           >
             <Card sx={{ maxWidth: 2000, minWidth: 800, width: "100%", m: 2 }}>
               <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
               >
-                <Typography variant="h5" component="h1" sx={{ mt: 2 }}>
+                <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
+                <Typography variant="h5" component="h1" sx={{mt: 2}}>
                   Available Booking Time
                 </Typography>
               </Box>
               <CardContent
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
                   gap: 2,
                   alignItems: "center",
                 }}

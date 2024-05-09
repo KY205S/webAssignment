@@ -30,19 +30,19 @@ const Navbar = () => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <MedicalServicesIcon />
           <Typography variant="h6" sx={{ marginLeft: 2 }}>
-            NHS Help
+            G13 Medical
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <IconButton sx={{ marginRight: "10px" }} color="inherit">
-            <Badge badgeContent={4} color="error">
-              <NotificationsIcon fontSize="large" />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit" onClick={(e) => setOpen(true)}>
-            <AccountCircle fontSize="large" />
-          </IconButton>
-        </Box>
+        {/*<Box sx={{ display: "flex", alignItems: "center" }}>*/}
+        {/*  <IconButton sx={{ marginRight: "10px" }} color="inherit">*/}
+        {/*    <Badge badgeContent={4} color="error">*/}
+        {/*      <NotificationsIcon fontSize="large" />*/}
+        {/*    </Badge>*/}
+        {/*  </IconButton>*/}
+        {/*  <IconButton color="inherit" onClick={(e) => setOpen(true)}>*/}
+        {/*    <AccountCircle fontSize="large" />*/}
+        {/*  </IconButton>*/}
+        {/*</Box>*/}
       </StyledToolbar>
       <Menu
         id="demo-positioned-menu"

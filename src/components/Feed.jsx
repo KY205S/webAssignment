@@ -23,7 +23,7 @@ const Feed = () => {
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "skyblue" }} aria-label="recipe">
-              R
+              G13
             </Avatar>
           }
           action={
@@ -31,17 +31,12 @@ const Feed = () => {
               <MoreVertIcon />
             </IconButton>
           }
-          title="NHS Help"
+          title="G13 Medical"
         />
-        <CardMedia
-          component="img"
-          height="20%"
-          image="https://dailysceptic.org/wp-content/uploads/2022/12/Rainbow-NHS-badge_Video-01-01-01-01-1024x576-1.png"
-          alt="Paella dish"
-        />
+        <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            This is NHS help webpage, please to login in first to use our
+          This is G13 Medical webpage, please to login in first to use our
             service
           </Typography>
         </CardContent>
@@ -51,7 +46,7 @@ const Feed = () => {
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "skyblue" }} aria-label="recipe">
-              R
+              G13
             </Avatar>
           }
           action={
@@ -59,17 +54,12 @@ const Feed = () => {
               <MoreVertIcon />
             </IconButton>
           }
-          title="NHS Help"
+          title="G13 Medical"
         />
-        <CardMedia
-          component="img"
-          height="20%"
-          image="https://dailysceptic.org/wp-content/uploads/2022/12/Rainbow-NHS-badge_Video-01-01-01-01-1024x576-1.png"
-          alt="Paella dish"
-        />
+        <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            This is NHS help webpage, please to login in first to use our
+          This is G13 Medical webpage, please to login in first to use our
             service
           </Typography>
         </CardContent>

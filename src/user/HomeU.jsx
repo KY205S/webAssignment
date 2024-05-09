@@ -86,7 +86,7 @@ const Welcome = () => {
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "skyblue" }} aria-label="recipe">
-              R
+              G13
             </Avatar>
           }
           action={
@@ -94,7 +94,7 @@ const Welcome = () => {
               <MoreVertIcon />
             </IconButton>
           }
-          title="NHS Help"
+          title="G13 Medical"
         />
         <CardMedia
           component="img"
