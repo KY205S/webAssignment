@@ -24,7 +24,7 @@ const OnlineConsult = () => {
   useEffect(() => {
   const fetchChatData = async () => {
     try {
-      const response = await AuthService.makeAuthRequest("http://10.14.150.220:8000/my-conversation/", {
+      const response = await AuthService.makeAuthRequest("http://10.14.150.66:8000/my-conversation/", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ const OnlineConsult = () => {
     };
 
     try {
-      const response = await AuthService.makeAuthRequest("http://10.14.150.220:8000/my-conversation/send/", {
+      const response = await AuthService.makeAuthRequest("http://10.14.150.66:8000/my-conversation/send/", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

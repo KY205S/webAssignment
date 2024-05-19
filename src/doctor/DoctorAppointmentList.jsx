@@ -1,27 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
-  Tooltip,
-  IconButton,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-} from "@mui/material";
+import { Box, Card, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Tooltip, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { ErrorOutline } from "@mui/icons-material";
 import AuthService from "../components/AuthService";
+import { useNavigate } from 'react-router-dom';
 
 const AppointmentListPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -30,11 +11,13 @@ const AppointmentListPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentAppointmentNumber, setCurrentAppointmentNumber] = useState(null);
   const [currentStatus, setCurrentStatus] = useState("");
-  const [reason, setReason] = useState("");
+  const [doctor_advice, setReason] = useState("");
+
+  const navigate = useNavigate(); // 使用 useNavigate 进行导航
 
   useEffect(() => {
     setIsLoading(true);
-    AuthService.makeAuthRequest("http://10.14.150.220:8000/doctorappointmentlist", {
+    AuthService.makeAuthRequest("http://10.14.150.66:8000/doctorappointmentlist", {
       method: 'GET',
     })
       .then((response) => {
@@ -52,6 +35,10 @@ const AppointmentListPage = () => {
         setIsLoading(false);
       });
   }, []);
+
+  const goToAppointmentDetail = (appointmentId) => {
+    navigate(`/medical-records/${appointmentId}`);
+  };
 
   const getStatusStyles = (status) => {
     const statusColors = {
@@ -80,15 +67,21 @@ const AppointmentListPage = () => {
     setReason(event.target.value);
   };
 
-  const handleStatusChange = (appointmentNumber, newStatus) => {
-    AuthService.makeAuthRequest(`http://10.14.150.220:8000/doctorappointmentlist/${appointmentNumber}`, {
-      method: 'PATCH',
+  const handleDialogSubmit = () => {
+    handleStatusChange(currentAppointmentNumber, currentStatus, doctor_advice);
+    handleCloseDialog();
+  };
+
+  const handleStatusChange = (appointmentNumber, newStatus, doctor_advice) => {
+    AuthService.makeAuthRequest(`http://10.14.150.66:8000/update-appointment/`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        appointment_number: appointmentNumber,
         status: newStatus,
-        advice: reason || "No reason provided",
+        doctor_advice: doctor_advice || "No reason provided",
       }),
     })
       .then((response) => {
@@ -101,7 +94,7 @@ const AppointmentListPage = () => {
         setAppointments((currentAppointments) =>
           currentAppointments.map((appointment) =>
             appointment.appointment_number === appointmentNumber
-              ? { ...appointment, status: newStatus, advice: reason }
+              ? { ...appointment, status: newStatus, advice: doctor_advice }
               : appointment
           )
         );
@@ -109,11 +102,6 @@ const AppointmentListPage = () => {
       .catch((error) => {
         console.error("Error updating appointment status:", error);
       });
-  };
-
-  const handleDialogSubmit = () => {
-    handleStatusChange(currentAppointmentNumber, currentStatus);
-    handleCloseDialog();
   };
 
   const renderStatusButtons = (status, appointmentNumber) => {
@@ -173,10 +161,10 @@ const AppointmentListPage = () => {
     }
   };
 
-  const renderReasonIcon = (status, advice) => {
+  const renderReasonIcon = (status, doctor_advice) => {
     if (status.toLowerCase() === "refused" || status.toLowerCase() === "cancelled") {
       return (
-        <Tooltip title={`Advice: ${advice}`} arrow>
+        <Tooltip title={`Reason: ${doctor_advice}`} arrow>
           <IconButton size="small" color="error">
             <ErrorOutline />
           </IconButton>
@@ -209,7 +197,8 @@ const AppointmentListPage = () => {
               {appointments.map((appointment) => (
                 <TableRow
                   key={appointment.appointment_number}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  onClick={() => goToAppointmentDetail(appointment.appointment_number)}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 }, cursor: "pointer" }}
                 >
                   <TableCell align="center">{appointment.appointment_number}</TableCell>
                   <TableCell align="center">{appointment.patient_name}</TableCell>
@@ -261,7 +250,7 @@ const AppointmentListPage = () => {
             margin="dense"
             label="Reason"
             fullWidth
-            value={reason}
+            value={doctor_advice}
             onChange={handleReasonChange}
             sx={{ width: 500 }}
           />

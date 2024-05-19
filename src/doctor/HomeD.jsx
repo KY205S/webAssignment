@@ -24,7 +24,7 @@ const Welcome = () => {
   const [error, setError] = useState(null);
   useEffect(() => {
     setIsLoading(true);
-    // AuthService.makeAuthRequest("http://10.14.150.220:8000/profileD", {
+    // AuthService.makeAuthRequest("http://10.14.150.66:8000/profileD", {
 //   method: 'GET'
 //   })
 

@@ -30,6 +30,7 @@ import PatientAppointmentList from "./user/PatientAppointmentList";
 import EditMedicalResult from "./doctor/EditMedicalResult";
 import ViewMedicalResult from './user/ViewMedicalResult'
 import OnlineConsult from './components/OnlineConsult'
+import MedicalRecords from './doctor/EditMedicalResult'
 
 
 function App() {
@@ -78,9 +79,10 @@ function App() {
                   />
                   <Route path="/DoctorAppointmentList" element={<DoctorAppointmentList />} />
                   <Route path="/PatientAppointmentList" element={<PatientAppointmentList />} />
-                  <Route path="/EditMedicalResult" element={<EditMedicalResult />} />
+                  {/*<Route path="/EditMedicalResult" element={<EditMedicalResult />} />*/}
                   <Route path="/ViewMedicalResult" element={<ViewMedicalResult />} />
                   <Route path="/OnlineConsult" element={<OnlineConsult />} />
+                  <Route path="/medical-records/:appointmentId" element={<MedicalRecords />} />
 
                   <Route
                     path="/changePassword"
