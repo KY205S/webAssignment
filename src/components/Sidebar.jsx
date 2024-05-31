@@ -198,20 +198,22 @@ const RegularSidebar = () => {
           <Divider />
 
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton
+                to="/ExaminationReport" >
               <ListItemIcon sx={{ marginLeft: "5px", minWidth: "35px" }}>
                 <AnalyticsOutlinedIcon sx={{ color: "black", fontSize: 26 }} />
               </ListItemIcon>
               <ListItemText
-                primary="Testing"
+                primary="Examination"
                 sx={{ "& .MuiListItemText-primary": { fontSize: "1.2rem" } }}
               />
             </ListItemButton>
           </ListItem>
           <Divider />
 
+
           <Link
-            to="/message"
+            to="/OnlineConsult"
             style={{
               textDecoration: "none",
               color: "inherit",

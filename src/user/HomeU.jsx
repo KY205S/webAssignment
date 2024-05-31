@@ -81,7 +81,17 @@ const Welcome = () => {
       ? `${users[0].birthDay}/${users[0].birthMonth}/${users[0].birthYear}`
       : "Date of birth not provided";
   return (
-    <Box flex={9} p={2}>
+    // Box flex={9} p={2}>
+      <Box
+      margin="auto"
+      width="50%" // 设置一个固定的宽度，可以根据需要调整
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
       <Card sx={{ maxWidth: 550, marginLeft: 30 }}>
         <CardHeader
           avatar={

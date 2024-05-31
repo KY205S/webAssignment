@@ -24,7 +24,7 @@ const Welcome = () => {
   const [error, setError] = useState(null);
   useEffect(() => {
     setIsLoading(true);
-    // AuthService.makeAuthRequest("http://10.14.150.66:8000/profileD", {
+    // AuthService.makeAuthRequest("http://10.14.150.155:8000/profileD", {
 //   method: 'GET'
 //   })
 
@@ -47,7 +47,17 @@ const Welcome = () => {
       : "Date of birth not provided";
 
   return (
-    <Box flex={9} p={2}>
+    // <Box flex={9} p={2}>
+      <Box
+      margin="auto"
+      width="50%" // 设置一个固定的宽度，可以根据需要调整
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
       <Card sx={{ marginLeft: 15 }}>
         <CardHeader
           avatar={

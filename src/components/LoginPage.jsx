@@ -116,7 +116,7 @@ const LoginPage = () => {
     //   });
 
     axios
-      .post("http://10.14.150.66:8000/login/", formData)
+      .post("http://10.14.150.155:8000/login/", formData)
       .then((response) => {
         console.log(response.data);
         // alert("You have successfully registered");
@@ -189,12 +189,13 @@ const LoginPage = () => {
 
   return (
     <Box
-      marginLeft={35}
+      margin="auto"
+      width="50%" // 设置一个固定的宽度，可以根据需要调整
       sx={{
+        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-        p: 2,
       }}
     >
       <Card sx={{ maxWidth: 400, width: "100%", m: 2 }}>

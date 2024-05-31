@@ -17,7 +17,7 @@ const AppointmentListPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    AuthService.makeAuthRequest("http://10.14.150.66:8000/doctorappointmentlist", {
+    AuthService.makeAuthRequest("http://10.14.150.155:8000/doctorappointmentlist", {
       method: 'GET',
     })
       .then((response) => {
@@ -73,7 +73,7 @@ const AppointmentListPage = () => {
   };
 
   const handleStatusChange = (appointmentNumber, newStatus, doctor_advice) => {
-    AuthService.makeAuthRequest(`http://10.14.150.66:8000/update-appointment/`, {
+    AuthService.makeAuthRequest(`http://10.14.150.155:8000/update-appointment/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,6 +126,23 @@ const AppointmentListPage = () => {
             </Button>
           </>
         );
+
+        case "completed":
+        return (
+          <>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                setCurrentAppointmentNumber(appointmentNumber);
+                setOpenUploadDialog(true);
+              }}
+            >
+              Upload Report
+            </Button>
+          </>
+        );
+
       case "accepted":
         return (
           <>
@@ -174,6 +191,59 @@ const AppointmentListPage = () => {
     return null;
   };
 
+  const [openUploadDialog, setOpenUploadDialog] = useState(false);
+  const [uploadData, setUploadData] = useState({
+    ExaminationReportName: '',
+    reportDate: '',
+    file: null
+  });
+
+  const handleUploadSubmit = () => {
+  const formData = new FormData();
+  formData.append('appointmentNumber', currentAppointmentNumber);
+  formData.append('patientName', appointments.find(app => app.appointment_number === currentAppointmentNumber)?.patient_name);
+  formData.append('ExaminationReportName', uploadData.ExaminationReportName);
+  formData.append('reportDate', uploadData.reportDate);
+  formData.append('file', uploadData.file);
+
+  AuthService.makeAuthRequest('http://10.14.150.155:8000/upload-test-record/', {
+    method: 'POST',
+    body: formData,
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Success:', data);
+    setOpenUploadDialog(false);
+    setUploadError(null);  // 清除之前的错误状态
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+    setUploadError("Upload failed: " + error.message);  // 设置错误信息
+  });
+};
+
+
+
+  const handleUploadDataChange = (event) => {
+    const { name, value } = event.target;
+    setUploadData(prevData => ({ ...prevData, [name]: value }));
+  };
+
+  const handleFileChange = (event) => {
+    if (event.target.files[0]) { // 确保有文件被选中
+      setUploadData(prevData => ({ ...prevData, file: event.target.files[0] }));
+    }
+  };
+
+
+  const [uploadError, setUploadError] = useState(null);
+
+
   return (
     <Box flex={4} p={2}>
       <Card>
@@ -197,15 +267,14 @@ const AppointmentListPage = () => {
               {appointments.map((appointment) => (
                 <TableRow
                   key={appointment.appointment_number}
-                  onClick={() => goToAppointmentDetail(appointment.appointment_number)}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 }, cursor: "pointer" }}
                 >
-                  <TableCell align="center">{appointment.appointment_number}</TableCell>
-                  <TableCell align="center">{appointment.patient_name}</TableCell>
-                  <TableCell align="center">{appointment.time}</TableCell>
-                  <TableCell align="center">{appointment.location}</TableCell>
-                  <TableCell align="center">
-                    <Tooltip title={appointment.description} arrow>
+                    <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.appointment_number}</TableCell>
+                    <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.patient_name}</TableCell>
+                    <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.time}</TableCell>
+                    <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.location}</TableCell>
+                    <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>
+                      <Tooltip title={appointment.description} arrow>
                       <Typography
                         sx={{
                           maxWidth: "200px",
@@ -255,6 +324,7 @@ const AppointmentListPage = () => {
             sx={{ width: 500 }}
           />
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">
             Cancel
@@ -264,6 +334,51 @@ const AppointmentListPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog open={openUploadDialog} onClose={() => {
+  setOpenUploadDialog(false);
+  setUploadError(null); // 关闭对话框时清除错误信息
+}}>
+  <DialogTitle>Upload a Examination Report</DialogTitle>
+  <DialogContent>
+    <DialogContentText>Please provide the details of the Examination report:</DialogContentText>
+    <TextField
+      autoFocus
+      margin="dense"
+      name="ExaminationReportName"
+      label="Examination Report Name"
+      type="text"
+      fullWidth
+      value={uploadData.ExaminationReportName}
+      onChange={handleUploadDataChange}
+    />
+    <TextField
+      margin="dense"
+      name="reportDate"
+      label="Report Date"
+      type="date"
+      fullWidth
+      value={uploadData.reportDate}
+      onChange={handleUploadDataChange}
+      InputLabelProps={{ shrink: true }}
+    />
+    <input
+      accept="application/pdf"
+      type="file"
+      onChange={handleFileChange}
+      style={{ marginTop: 20 }}
+    />
+    {uploadError && (
+      <Typography color="error" sx={{ mt: 2 }}>
+        {uploadError}
+      </Typography>
+    )}
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenUploadDialog(false)}>Cancel</Button>
+    <Button onClick={handleUploadSubmit}>Upload</Button>
+  </DialogActions>
+</Dialog>
+
     </Box>
   );
 };

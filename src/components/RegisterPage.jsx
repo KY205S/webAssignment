@@ -159,7 +159,7 @@ const RegisterPage = () => {
     }
 
     axios
-      .post("http://10.14.150.66:8000/register/", formData)
+      .post("http://10.14.150.155:8000/register/", formData)
       .then((response) => {
         console.log(response.data);
         console.log(response);

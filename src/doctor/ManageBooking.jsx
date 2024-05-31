@@ -139,7 +139,7 @@ const nextDates = Array.from({ length: 7 }, (_, i) => {
       selectedTimes: formattedSelectedTimes,
     };
 
-    AuthService.makeAuthRequest("http://10.14.150.66:8000/schedule/", {
+    AuthService.makeAuthRequest("http://10.14.150.155:8000/schedule/", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(formData)

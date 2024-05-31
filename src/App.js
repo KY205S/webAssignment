@@ -1,5 +1,6 @@
 import "./App.css";
 import * as React from "react";
+import { useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Rightbar from "./components/Rightbar";
 import Navbar from "./components/Navbar";
@@ -31,20 +32,25 @@ import EditMedicalResult from "./doctor/EditMedicalResult";
 import ViewMedicalResult from './user/ViewMedicalResult'
 import OnlineConsult from './components/OnlineConsult'
 import MedicalRecords from './doctor/EditMedicalResult'
-
+import ExaminationReport from "./user/ExaminationReport"
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("isLoggedIn") === "true";
+  });
+
+  useEffect(() => {
+    // 每当 isLoggedIn 状态变化时更新 localStorage
+    localStorage.setItem("isLoggedIn", isLoggedIn);
+  }, [isLoggedIn]);
+
+
 
   return (
     <div>
       <Router>
-        <MyContext.Provider
-          value={{
-            isLoggedIn,
-            setIsLoggedIn,
-          }}
-        >
+        <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        {isLoggedIn && <Sidebar />}
           <Box>
             <Navbar />
 
@@ -83,6 +89,7 @@ function App() {
                   <Route path="/ViewMedicalResult" element={<ViewMedicalResult />} />
                   <Route path="/OnlineConsult" element={<OnlineConsult />} />
                   <Route path="/medical-records/:appointmentId" element={<MedicalRecords />} />
+                  <Route path="/ExaminationReport" element={<ExaminationReport />} />
 
                   <Route
                     path="/changePassword"
