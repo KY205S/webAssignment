@@ -33,6 +33,7 @@ import ViewMedicalResult from './user/ViewMedicalResult'
 import OnlineConsult from './components/OnlineConsult'
 import MedicalRecords from './doctor/EditMedicalResult'
 import ExaminationReport from "./user/ExaminationReport"
+import ConsultService from "./admin/ConsultService"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -46,21 +47,25 @@ function App() {
 
 
 
-  return (
-    <div>
-      <Router>
-        <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-        {isLoggedIn && <Sidebar />}
-          <Box>
-            <Navbar />
-
-            <Stack
-              direction={"row"}
-              spacing={2}
-              justifyContent={"space-between"}
-            >
-              <Sidebar />
-              <Box flex={9} p={2}>
+ return (
+    <Router>
+      <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        {isLoggedIn && <Navbar />}
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="flex-start"  // 确保内容顶部对齐
+        >
+          {isLoggedIn && <Sidebar />}
+        <Box
+  className="main-content"
+  component="main"
+  sx={{
+    flexGrow: 1,
+    p: 3
+  }}
+>
                 <Routes>
                   <Route path="/" element={<Welcome />} />
                   <Route path="/login" element={<LoginPage />} />
@@ -90,19 +95,17 @@ function App() {
                   <Route path="/OnlineConsult" element={<OnlineConsult />} />
                   <Route path="/medical-records/:appointmentId" element={<MedicalRecords />} />
                   <Route path="/ExaminationReport" element={<ExaminationReport />} />
+                  <Route path="/ConsultService" element={<ConsultService />} />
 
                   <Route
                     path="/changePassword"
                     element={<PasswordChangeForm />}
                   />
                 </Routes>
-              </Box>
-              {/*<Rightbar />*/}
-            </Stack>
           </Box>
-        </MyContext.Provider>
-      </Router>
-    </div>
+        </Stack>
+      </MyContext.Provider>
+    </Router>
   );
 }
 

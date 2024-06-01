@@ -41,7 +41,7 @@ const Booking = () => {
 
     setIsLoading(true);
     // 使用指定科室名称请求可用时间段
-    const url = `http://10.14.150.155:8000/available-times/${selectedDepartment.toLowerCase()}/`;
+    const url = `http://10.14.149.222:8000/available-times/${selectedDepartment.toLowerCase()}/`;
 
     AuthService.makeAuthRequest(url)
       .then((response) => {
@@ -100,7 +100,7 @@ const Booking = () => {
     };
 
     // 使用 AuthService 发起 POST 请求
-    const url = "http://10.14.150.155:8000/make-appointment/";
+    const url = "http://10.14.149.222:8000/make-appointment/";
 
     AuthService.makeAuthRequest(url, {
       method: "POST",

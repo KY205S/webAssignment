@@ -29,7 +29,7 @@ const MedicalConsultationDetails = () => {
   useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await AuthService.makeAuthRequest(`http://10.14.150.155:8000/medical-records/${appointmentId}/`, {
+      const response = await AuthService.makeAuthRequest(`http://10.14.149.222:8000/medical-records/${appointmentId}/`, {
         method: 'GET'
       });
       console.log("111111111111111111111111111111")
@@ -145,7 +145,7 @@ const MedicalConsultationDetails = () => {
     formData.append('diagnosis', diagnose);
 
     try {
-      await AuthService.makeAuthRequest('http://10.14.150.155:8000/upload-examination', {
+      await AuthService.makeAuthRequest('http://10.14.149.222:8000/upload-examination', {
         method: 'POST',
         body: formData,
 
@@ -167,7 +167,7 @@ const MedicalConsultationDetails = () => {
   };
 
   try {
-    await AuthService.makeAuthRequest('http://10.14.150.155:8000/update-medical-record/', {
+    await AuthService.makeAuthRequest('http://10.14.149.222:8000/update-medical-record/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

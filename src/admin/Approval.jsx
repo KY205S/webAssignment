@@ -7,6 +7,7 @@ import axios from "axios";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import AuthService from "../components/AuthService";
 import { baseUrl } from '../components/Ipconfig';
+import { Typography } from '@mui/material';
 
 const Approval = () => {
   const navigate = useNavigate();
@@ -89,80 +90,85 @@ const Approval = () => {
   };
 
   return (
-    <Box flex={9} p={2}>
-      <Card sx={{ marginLeft: 5 }}>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">User ID</TableCell>
-                <TableCell align="left">Identity</TableCell>
-                <TableCell align="center">E-mail</TableCell>
-                <TableCell align="center">Last Name</TableCell>
-                <TableCell align="center">First Name</TableCell>
-                <TableCell align="center">Status</TableCell>
+  <Box flex={9} p={2} sx={{ position: 'relative' }}>
+    <Typography variant="h4" sx={{ marginBottom: 2, marginLeft: 5 }}>
+      Registration Approval
+    </Typography>
+    <Card sx={{ margin: 5 }}>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">User ID</TableCell>
+              <TableCell align="center">Identity</TableCell>
+              <TableCell align="center">E-mail</TableCell>
+              <TableCell align="center">Last Name</TableCell>
+              <TableCell align="center">First Name</TableCell>
+              <TableCell align="center">Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow
+                key={user.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row" align="center">
+                  {user.id}
+                </TableCell>
+                <TableCell align="center">{user.identity}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">{user.lastName}</TableCell>
+                <TableCell align="center">{user.firstName}</TableCell>
+                <TableCell align="center">
+                  {user.status === "Approved" ? (
+                    <span>Approved</span>
+                  ) : user.status === "Declined" ? (
+                    <span>Declined</span>
+                  ) : (
+                    <>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => handleApprove(user.id)}
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleDecline(user.id)}
+                        sx={{ ml: 1 }}
+                      >
+                        Decline
+                      </Button>
+                    </>
+                  )}
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.map((user) => (
-                <TableRow
-                  key={user.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {user.id}
-                  </TableCell>
-                  <TableCell align="right">{user.identity}</TableCell>
-                  <TableCell align="right">{user.email}</TableCell>
-                  <TableCell align="right">{user.lastName}</TableCell>
-                  <TableCell align="right">{user.firstName}</TableCell>
-                  <TableCell align="right">
-                    {user.status === "Approved" ? (
-                      <span>Approved</span>
-                    ) : user.status === "Declined" ? (
-                      <span>Declined</span>
-                    ) : (
-                      <>
-                        <Button
-                          variant="contained"
-                          color="success"
-                          onClick={() => handleApprove(user.id)}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          onClick={() => handleDecline(user.id)}
-                          sx={{ ml: 1 }}
-                        >
-                          Decline
-                        </Button>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Card>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{
-          fontSize: "1.1rem",
-          px: 3,
-          py: 1,
-          marginLeft: 50,
-          marginTop: 10,
-        }}
-        onClick={() => navigate("/admin")}
-      >
-        Back
-      </Button>
-    </Box>
-  );
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Card>
+    <Button
+      variant="contained"
+      color="primary"
+      sx={{
+        fontSize: "1.1rem",
+        px: 3,
+        py: 1,
+        position: 'absolute',
+        bottom: 0,
+        right: 120,
+      }}
+      onClick={() => navigate("/admin")}
+    >
+      Back
+    </Button>
+  </Box>
+);
+
 };
 
 export default Approval;

@@ -1,0 +1,6 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1200; // 保证在侧边栏之上
+}

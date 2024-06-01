@@ -1,0 +1,8 @@
+.sidebar {
+  position: fixed;
+  top: 64px; // 顶部导航栏的高度
+  left: 0;
+  width: 240px; // 侧边栏的宽度
+  height: calc(100vh - 64px); // 减去顶部栏的高度
+  z-index: 1100;
+}
