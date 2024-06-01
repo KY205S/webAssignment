@@ -1,0 +1,7 @@
+.main-content {
+  margin-top: 64px;  // 确保这里的值等于你的 Navbar 高度
+  margin-left: 240px;  // 确保这里的值等于你的 Sidebar 宽度
+  width: calc(100% - 240px);  // 确保主内容区宽度正确计算
+  height: calc(100vh - 64px);  // 确保主内容区高度正确计算
+  /*overflow-y: auto;  // 允许内容区垂直滚动*/
+}

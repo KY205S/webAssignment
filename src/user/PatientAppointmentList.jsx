@@ -35,7 +35,7 @@ const AppointmentListPage = () => {
   // 使用 useEffect 来获取并解析预约数据
   useEffect(() => {
     setIsLoading(true);
-    AuthService.makeAuthRequest("http://10.14.150.155:8000/patientappointmentlist", {
+    AuthService.makeAuthRequest("http://10.14.149.222:8000/patientappointmentlist", {
       method: "GET",
     })
       .then((response) => {

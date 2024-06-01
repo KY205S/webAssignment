@@ -116,7 +116,7 @@ const LoginPage = () => {
     //   });
 
     axios
-      .post("http://10.14.150.155:8000/login/", formData)
+      .post("http://10.14.149.222:8000/login/", formData)
       .then((response) => {
         console.log(response.data);
         // alert("You have successfully registered");

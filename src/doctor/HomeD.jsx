@@ -24,12 +24,12 @@ const Welcome = () => {
   const [error, setError] = useState(null);
   useEffect(() => {
     setIsLoading(true);
-    // AuthService.makeAuthRequest("http://10.14.150.155:8000/profileD", {
+    // AuthService.makeAuthRequest("http://10.14.149.222:8000/profileD", {
 //   method: 'GET'
 //   })
 
     axios
-      .get("http://localhost:3001/profileD")
+      .get("http://10.14.149.222/profileD")
       .then((response) => {
         console.log("Fetched profile data:", response.data);
         setUsers(response.data); // Set the array of users

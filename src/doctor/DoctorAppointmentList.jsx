@@ -17,7 +17,7 @@ const AppointmentListPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    AuthService.makeAuthRequest("http://10.14.150.155:8000/doctorappointmentlist", {
+    AuthService.makeAuthRequest("http://10.14.149.222:8000/doctorappointmentlist", {
       method: 'GET',
     })
       .then((response) => {
@@ -73,7 +73,7 @@ const AppointmentListPage = () => {
   };
 
   const handleStatusChange = (appointmentNumber, newStatus, doctor_advice) => {
-    AuthService.makeAuthRequest(`http://10.14.150.155:8000/update-appointment/`, {
+    AuthService.makeAuthRequest(`http://10.14.149.222:8000/update-appointment/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ const AppointmentListPage = () => {
   formData.append('reportDate', uploadData.reportDate);
   formData.append('file', uploadData.file);
 
-  AuthService.makeAuthRequest('http://10.14.150.155:8000/upload-test-record/', {
+  AuthService.makeAuthRequest('http://10.14.149.222:8000/upload-test-record/', {
     method: 'POST',
     body: formData,
   })
