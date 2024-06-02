@@ -149,7 +149,7 @@ const nextDates = Array.from({ length: 7 }, (_, i) => {
 
   const responseData = await response.json();
   console.log(responseData);
-  alert("You have successfully registered");
+  alert("Settings saved successfully！");
 
   // 检查响应数据中特定字段，并在发现无效字段时弹出警告
   if (responseData.someField === "Invalid") {
@@ -166,250 +166,77 @@ console.log("Form submitted");
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Box>
-          {step === 1 && (
-            <Box
-              marginLeft={45}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                p: 2,
-              }}
-            >
-              <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                  <Typography variant="h5" component="h1" sx={{mt: 2}}>
-                  Booking Page
-                  </Typography>
-                </Box>
-
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                  }}
-                >
-                  <Button
-                    onClick={handleNext}
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1, width: "60%" }}
-                  >
-                    Next
-                  </Button>
-
-                  <Button color="primary" sx={{ mt: 1 }}>
-                    Back to login
-                  </Button>
-                </CardContent>
-              </Card>
-            </Box>
-          )}
-        </Box>
-
-        {/* Personal information register box */}
-        <Box>
-          {step === 2 && (
-            <Box
-              marginLeft={35}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                p: 2,
-              }}
-            >
-              <Card sx={{ maxWidth: 2000, minWidth: 800, width: "100%", m: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                  <Typography variant="h5" component="h1" sx={{mt: 2}}>
-                  Personal Information
-                  </Typography>
-                </Box>
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                  }}
-                >
-                  <Paper elevation={3} sx={{ padding: 2 }}>
-                    <Typography variant="h6" align="center" gutterBottom>
-                      {getFormattedDateRange()}
+  <div>
+    <form onSubmit={handleSubmit}>
+      <Box marginLeft={35}
+           sx={{
+             alignItems: "center",
+             justifyContent: "center",
+             height: "100vh",
+             p: 2,
+           }}>
+        <Card sx={{ maxWidth: 2000, minWidth: 800, width: "100%", m: 2 }}>
+          <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}>
+            {/*<img src={group13Logo} alt="Group13 Logo" style={{ maxWidth: "100px", marginTop: "20px" }} />*/}
+            <Typography variant="h5" component="h1" sx={{ mt: 2 }}>
+              Personal Information
+            </Typography>
+          </Box>
+          <CardContent sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: "center",
+          }}>
+            <Paper elevation={3} sx={{ padding: 2 }}>
+              <Typography variant="h6" align="center" gutterBottom>
+                {getFormattedDateRange()}
+              </Typography>
+              <Grid container spacing={2}>
+                {dates.map((day, index) => (
+                  <Grid item xs={12} sm key={day}>
+                    <Typography variant="subtitle2" gutterBottom>
+                      {day}
                     </Typography>
-                    <Grid container spacing={2}>
-                      {dates.map((day, index) => (
-                        <Grid item xs={12} sm key={day}>
-                          <Typography variant="subtitle2" gutterBottom>
-                            {day}
-                          </Typography>
-                          {times.map((time) => (
-                            <Button
-                              key={time}
-                              variant={
-                                selectedTimes.some(
-                                  (selected) =>
-                                    selected.time === time &&
-                                    selected.date === day
-                                )
-                                  ? "contained"
-                                  : "outlined"
-                              }
-                              onClick={() => handleSelectTime(time, day)}
-                              sx={{ margin: "4px", width: "64px" }}
-                            >
-                              {time}
-                            </Button>
-                          ))}
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Paper>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    sx={{ mt: 1, width: "50%" }}
-                  >
-                    Submit
-                  </Button>
-                  <Button
-                    onClick={handleNext}
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1, width: "50%" }}
-                  >
-                    Next
-                  </Button>
-                  <Button
-                    onClick={handleBack}
-                    variant="outlined"
-                    color="primary"
-                    sx={{ mt: 0, width: "50%" }}
-                  >
-                    Back
-                  </Button>
-                </CardContent>
-              </Card>
-            </Box>
-          )}
-        </Box>
+                    {times.map((time) => (
+                      <Button
+                        key={time}
+                        variant={
+                          selectedTimes.some(
+                            (selected) =>
+                              selected.time === time &&
+                              selected.date === day
+                          )
+                            ? "contained"
+                            : "outlined"
+                        }
+                        onClick={() => handleSelectTime(time, day)}
+                        sx={{ margin: "4px", width: "64px" }}
+                      >
+                        {time}
+                      </Button>
+                    ))}
+                  </Grid>
+                ))}
+              </Grid>
+            </Paper>
+            <Button variant="contained" color="primary" type="submit" sx={{ mt: 1, width: "50%" }}>
+              Submit
+            </Button>
+            <Button onClick={handleBack} variant="outlined" color="primary" sx={{ mt: 0, width: "50%" }}>
+              Back
+            </Button>
+          </CardContent>
+        </Card>
+      </Box>
+    </form>
+  </div>
+);
 
-        <Box>
-          {step === 3 && (
-            <Box
-              marginLeft={35}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                p: 2,
-              }}
-            >
-              <Card sx={{ maxWidth: 2000, minWidth: 800, width: "100%", m: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                  <Typography variant="h5" component="h1" sx={{mt: 2}}>
-                  Manage Booking
-                  </Typography>
-                </Box>
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                  }}
-                >
-                  <Paper elevation={3} sx={{ padding: 2 }}>
-                    <Typography variant="h6" align="center" gutterBottom>
-                      {getFormattedDateRange2()}
-                    </Typography>
-                    <Grid container spacing={2}>
-                      {nextDates.map((day, index) => (
-                        <Grid item xs={12} sm key={day}>
-                          <Typography variant="subtitle2" gutterBottom>
-                            {day}
-                          </Typography>
-                          {times.map((time) => (
-                            <Button
-                              key={time}
-                              variant={
-                                selectedTimes.some(
-                                  (selected) =>
-                                    selected.time === time &&
-                                    selected.date === day
-                                )
-                                  ? "contained"
-                                  : "outlined"
-                              }
-                              onClick={() => handleSelectTime(time, day)}
-                              sx={{ margin: "4px", width: "64px" }}
-                            >
-                              {time}
-                            </Button>
-                          ))}
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Paper>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    sx={{ mt: 1, width: "50%" }}
-                  >
-                    Submit
-                  </Button>
-                  <Button
-                    onClick={handleNext}
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1, width: "50%" }}
-                  >
-                    Next
-                  </Button>
-                  <Button
-                    onClick={handleBack}
-                    variant="outlined"
-                    color="primary"
-                    sx={{ mt: 0, width: "50%" }}
-                  >
-                    Back
-                  </Button>
-                </CardContent>
-              </Card>
-            </Box>
-          )}
-        </Box>
-      </form>
-    </div>
-  );
 };
 
 export default ManageBooking;

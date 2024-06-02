@@ -16,6 +16,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import AuthService from "../components/AuthService";
 
 const Arrangement = () => {
   const navigate = useNavigate();
@@ -26,23 +27,26 @@ const Arrangement = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3001/arrangement")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Fetched data:", data);
-        setUsers(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setIsLoading(false);
-      });
+    AuthService.makeAuthRequest("http://10.14.149.222:8000/approval/", {
+      method: 'GET',
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Fetched data:", data);
+      setUsers(data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      setError(error.message);
+      setIsLoading(false);
+    });
   }, []);
+
 
   const handleApprovalChange = (id, status) => {
     const approvalValue = status === "Approved" ? 1 : 0; // Assuming '1' for approved and '0' for declined
@@ -54,26 +58,29 @@ const Arrangement = () => {
     // Log the postData to the console before sending it
     console.log("Posting to backend:", postData);
 
-    // Send the data to the backend
-    axios
-      .post("http://localhost:3001/approval", postData)
-      .then((response) => {
-        console.log("Response from backend:", response.data);
+    // Send the data to the backend using makeAuthRequest
+    AuthService.makeAuthRequest("http://10.14.149.222:8000/approval/", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    })
+    .then((response) => {
+      console.log("Response from backend:", response.data);
 
-        // Update the UI by setting the user's approvalState
-        setUsers(
-          users.map((user) => {
-            if (user.id === id) {
-              return { ...user, status: status };
-            }
-            return user;
-          })
-        );
-      })
-      .catch((error) => {
-        console.error("Error posting approval status:", error);
-      });
-  };
+      // Update the UI by setting the user's approvalState
+      setUsers(users.map(user => {
+        if (user.id === id) {
+          return {...user, status: status};
+        }
+        return user;
+      }));
+    })
+    .catch((error) => {
+      console.error("Error posting approval status:", error);
+    });
+};
 
   const handleApprove = (id) => {
     const confirmApproval = window.confirm(
@@ -100,13 +107,12 @@ const Arrangement = () => {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Name</TableCell>
-
-                <TableCell align="left">Date</TableCell>
+                <TableCell align="center">Date</TableCell>
                 <TableCell align="center">Time</TableCell>
-
                 <TableCell align="center">Department</TableCell>
                 <TableCell align="center">Doctor</TableCell>
                 <TableCell align="center">Status</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -118,20 +124,19 @@ const Arrangement = () => {
                   <TableCell component="th" scope="row">
                     {user.name}
                   </TableCell>
-                  <TableCell align="right">{user.date}</TableCell>
+                  <TableCell align="center">{user.date}</TableCell>
 
-                  <TableCell align="right">{user.time}</TableCell>
-                  <TableCell align="right">{user.department}</TableCell>
-                  <TableCell align="right">{user.doctor}</TableCell>
+                  <TableCell align="center">{user.time}</TableCell>
+                  <TableCell align="center">{user.department}</TableCell>
+                  <TableCell align="center">{user.doctor}</TableCell>
                   <TableCell component="th" scope="row">
                     {user.id}
                   </TableCell>
-                  <TableCell align="right">{user.identity}</TableCell>
+                  <TableCell align="center">{user.identity}</TableCell>
 
-                  <TableCell align="right">{user.email}</TableCell>
-                  <TableCell align="right">{user.lastName}</TableCell>
-                  <TableCell align="right">{user.firstName}</TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">{user.email}</TableCell>
+                  <TableCell align="center">{user.lastName}</TableCell>
+                  <TableCell align="center">
                     {user.status === "Approved" ? (
                       <span>Approved</span>
                     ) : user.status === "Declined" ? (

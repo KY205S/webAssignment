@@ -109,7 +109,7 @@ function App() {
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/registerDoctor" element={<RegisterDoctor />} />
                   <Route path="/messageRespond" element={<MessageRespond />} />
-                  <Route path="/userApproval" element={<Approval />} />
+                  <Route path="/Approval" element={<Approval />} />
                   <Route path="/updateContact" element={<UpdateContact />} />
                   <Route
                     path="/upcomingBooking"
