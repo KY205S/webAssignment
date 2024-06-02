@@ -1,166 +1,174 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  IconButton,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogContentText,
-  Button
+  Box, Card, CardContent, Typography,
+  Table, TableBody, TableCell, TableHead, TableRow,
+  Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText,
+  Snackbar, Button
 } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
-import axios from 'axios';
+import AuthService from "../components/AuthService";
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ViewMedicalResult = () => {
-  const [patientInfo, setPatientInfo] = useState({ name: '', age: 0, appointmentNumber: '', description: '' });
+  const { appointmentId } = useParams();
+  const [patientInfo, setPatientInfo] = useState({ patient_name: '', age: 0, appointmentNumber: '', description: '' });
   const [diagnose, setDiagnose] = useState('');
   const [prescriptions, setPrescriptions] = useState([]);
   const [examinations, setExaminations] = useState([]);
-  const [reportDialogOpen, setReportDialogOpen] = useState(false);
-  const [activeExamination, setActiveExamination] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const navigate = useNavigate();
 
-  // 获取数据
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const patientInfoRes = await axios.get('http://localhost:3001/patientInfo');
-        setPatientInfo(patientInfoRes.data);
-
-        const diagnoseRes = await axios.get('http://localhost:3001/diagnose');
-        setDiagnose(diagnoseRes.data.Diagnose || '');
-
-        const prescriptionsRes = await axios.get('http://localhost:3001/prescriptions');
-        setPrescriptions(prescriptionsRes.data);
-
-        const examinationsRes = await axios.get('http://localhost:3001/examinations');
-        setExaminations(examinationsRes.data);
+        const response = await AuthService.makeAuthRequest(`http://10.14.149.222:8000/patient/medical-records/${appointmentId}/`, {
+          method: 'GET'
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        if (data) {
+          const { info, diagnose, prescriptions, examinations } = data;
+          setPatientInfo({
+            patient_name: info?.patient_name || '',
+            doctor_name: info?.doctor_name || '',
+            age: info?.age || '',
+            appointmentNumber: info?.appointmentNumber || '',
+            description: info?.description || ''
+          });
+          setDiagnose(diagnose?.Diagnose || '');
+          setPrescriptions(prescriptions || []);
+          setExaminations(examinations || []);
+        } else {
+          throw new Error("No data received from backend");
+        }
       } catch (error) {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data:", error);
+        setSnackbarMessage('Failed to fetch data');
+        setSnackbarOpen(true);
       }
     };
 
     fetchData();
-  }, []);
-
-  // 打开报告对话框
-  const handleOpenReportDialog = (examination) => {
-    setActiveExamination(examination);
-    setReportDialogOpen(true);
-  };
-
-  // 下载报告
-  const handleDownloadReport = async (id) => {
-    try {
-      const response = await axios.get(`http://localhost:3001/examinations/${id}/download`, {
-        responseType: 'blob'
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'medical_report.pdf');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Error downloading report:', error);
-    }
-  };
+  }, [appointmentId]);
 
   return (
     <Box>
       <Card>
         <CardContent>
-          <Typography variant="h4" style={{ fontWeight: 'bold' }}>Medical Consultation Details (Patient View)</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'left' }}>Medical Consultation</Typography>
 
-          <Box mt={2} bgcolor="lightblue" p={2}>
-            <Typography variant="h6">Basic Info</Typography>
+          <Box mt={2} p={2} sx={{ textAlign: 'left' }}>
+            <Box bgcolor="lightblue" p={1}>
+              <Typography variant="h6">Basic Info</Typography>
+            </Box>
           </Box>
-          <Typography>Name: {patientInfo.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Age: {patientInfo.age}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Appointment Number: {patientInfo.appointmentNumber}</Typography>
-          <Typography>Description: {patientInfo.description}</Typography>
 
-          <Box mt={2} bgcolor="lightblue" p={2}>
-            <Typography variant="h6">Diagnostic Result</Typography>
-          </Box>
-          <Typography>{diagnose}</Typography>
+          <Box display="flex" alignItems="center" mb={1}>
+    <Typography style={{ fontWeight: 'bold', marginRight: '8px', marginLeft: '18px' }}>Name:</Typography>
+    <Typography>{patientInfo.patient_name}</Typography>
+  </Box>
 
-          <Box mt={2} bgcolor="lightblue" p={2}>
-            <Typography variant="h6">Prescription</Typography>
+  <Box display="flex" alignItems="center" mb={1}>
+    <Typography style={{ fontWeight: 'bold', marginRight: '8px', marginLeft: '18px' }}>Age:</Typography>
+    <Typography>{patientInfo.age}</Typography>
+  </Box>
+
+  <Box display="flex" alignItems="center" mb={1}>
+    <Typography style={{ fontWeight: 'bold', marginRight: '8px', marginLeft: '18px' }}>Doctor:</Typography>
+    <Typography>{patientInfo.doctor_name}</Typography>
+  </Box>
+
+  <Box display="flex" alignItems="center" mb={1}>
+    <Typography style={{ fontWeight: 'bold', marginRight: '8px', marginLeft: '18px' }}>Appointment Number:</Typography>
+    <Typography>{patientInfo.appointmentNumber}</Typography>
+  </Box>
+
+  <Box display="flex" alignItems="center" mb={1}>
+    <Typography style={{ fontWeight: 'bold', marginRight: '8px', marginLeft: '18px' }}>Description:</Typography>
+    <Typography>{patientInfo.description}</Typography>
+  </Box>
+
+          <Box mt={2} p={2} sx={{ textAlign: 'left' }}>
+            <Box bgcolor="lightblue" p={1}>
+              <Typography variant="h6">Diagnostic Result</Typography>
+            </Box>
+            <Typography>{diagnose}</Typography>
           </Box>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Medicine Name</TableCell>
-                <TableCell>Count</TableCell>
-                <TableCell>Note</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {prescriptions.map((prescription) => (
-                <TableRow key={prescription.id}>
-                  <TableCell>{prescription.medicineName}</TableCell>
-                  <TableCell>{prescription.count}</TableCell>
-                  <TableCell>{prescription.note}</TableCell>
+
+          <Box mt={2} p={2} sx={{ textAlign: 'left' }}>
+            <Box bgcolor="lightblue" p={1}>
+              <Typography variant="h6">Prescription</Typography>
+            </Box>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Medicine Name</TableCell>
+                  <TableCell>Count</TableCell>
+                  <TableCell>Note</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          <Box mt={2} bgcolor="lightblue" p={2}>
-            <Typography variant="h6">Medical Examination</Typography>
+              </TableHead>
+              <TableBody>
+                {prescriptions.map((prescription) => (
+                  <TableRow key={prescription.id}>
+                    <TableCell>{prescription.medicine_name}</TableCell>
+                    <TableCell>{prescription.quantity}</TableCell>
+                    <TableCell>{prescription.usage_description}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </Box>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Examination Name</TableCell>
-                <TableCell>Time</TableCell>
-                <TableCell>Note</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {examinations.map((examination) => (
-                <TableRow key={examination.id}>
-                  <TableCell>{examination.examinationName}</TableCell>
-                  <TableCell>{examination.time}</TableCell>
-                  <TableCell>{examination.note}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleOpenReportDialog(examination)}>
-                      <DownloadIcon />
-                    </IconButton>
-                  </TableCell>
+
+          <Box mt={2} p={2} sx={{ textAlign: 'left' }}>
+            <Box bgcolor="lightblue" p={1}>
+              <Typography variant="h6">Medical Examination</Typography>
+            </Box>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Examination Name</TableCell>
+                  <TableCell>Time</TableCell>
+                  <TableCell>Note</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {examinations.map((examination) => (
+                  <TableRow key={examination.id}>
+                    <TableCell>{examination.exam_name}</TableCell>
+                    <TableCell>{examination.exam_date}</TableCell>
+                    <TableCell>{examination.exam_description}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
 
         </CardContent>
       </Card>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      />
 
-      {/* 对话框显示报告详情并下载 */}
-      <Dialog open={reportDialogOpen} onClose={() => setReportDialogOpen(false)}>
-        <DialogTitle>Examination Report</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Examination: {activeExamination?.examinationName}</DialogContentText>
-          <DialogContentText>Diagnosis: {activeExamination?.diagnosis || 'No diagnosis available'}</DialogContentText>
-        </DialogContent>
-        <Box display="flex" justifyContent="flex-end" p={2}>
-          <Button variant="contained" onClick={() => handleDownloadReport(activeExamination.id)}>
-            Download Report
-          </Button>
-        </Box>
-      </Dialog>
+      <Box mt={2} display="flex" justifyContent="flex-end">
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => navigate('/PatientAppointmentList')}
+          style={{width: "90px",  marginRight: '20px', borderColor: 'blue' }}
+          >
+          Back
+        </Button>
+      </Box>
+
     </Box>
   );
+
 };
 
 export default ViewMedicalResult;

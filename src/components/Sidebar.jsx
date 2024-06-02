@@ -117,7 +117,6 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 // };
 
 const RegularSidebar = () => {
-  // Your code for the regular sidebar goes here
   const { setIsLoggedIn } = useContext(MyContext);
   const navigate = useNavigate();
 
@@ -127,35 +126,40 @@ const RegularSidebar = () => {
     navigate('/login');
   };
 
-
-   return (
+  return (
     <Box
-      sx={{
-        width: 240,
-        height: "100vh",
-        bgcolor: "primary.main",
-        color: "white",
-        py: 2,
-        ".MuiListItemButton-root": {
-          borderRadius: "8px",
-          margin: "6px 12px",
-          "&:hover": {
-            bgcolor: "primary.dark"
-          }
-        }
-      }}
-    >
+   sx={{
+     position: 'fixed',
+     top: '64px',
+     left: 0,
+     bottom: 0,
+     width: 240,
+     bgcolor: 'primary.main',
+     color: 'white',
+     py: 2,
+     ".MuiListItemButton-root": {
+       borderRadius: "8px",
+       margin: "6px 12px",
+       "&:hover": {
+         bgcolor: "primary.dark"
+       }
+     }
+   }}
+>
       <List>
         {[
           { icon: <AddBoxOutlinedIcon />, text: "Booking", link: "/booking" },
-  { icon: <ListAltIcon />, text: "Arrangement", link: "/arrangement" },
-  { icon: <AssignmentOutlinedIcon />, text: "Records", link: "/record" },
-  { icon: <AnalyticsOutlinedIcon />, text: "Examination", link: "/ExaminationReport" },
-  { icon: <MessageOutlinedIcon />, text: "Message", link: "/OnlineConsult" },
-  { icon: <MessageOutlinedIcon />, text: "Consult", link: "/ConsultService" },
-  { icon: <SettingsOutlinedIcon />, text: "Settings", link: "/home" }, // Check if the link is correct
-  { icon: <LogoutIcon />, text: "Logout", link: "/" }, // Assuming this logs out and redirects to home
-  { icon: <DarkModeIcon />, text: "Toggle Dark Mode", link: "#" } // No link needed for toggle, using "#" as placeholder
+          { icon: <ListAltIcon />, text: "Arrangement", link: "/arrangement" },
+          // { icon: <AssignmentOutlinedIcon />, text: "Records", link: "/record" },
+          { icon: <ListAltIcon />, text: "AppointmentD", link: "/DoctorAppointmentList" },
+          { icon: <ListAltIcon />, text: "AppointmentU", link: "/PatientAppointmentList" },
+          { icon: <AnalyticsOutlinedIcon />, text: "Examination", link: "/ExaminationReport" },
+          { icon: <MessageOutlinedIcon />, text: "ConsultU", link: "/OnlineConsult" },
+          { icon: <MessageOutlinedIcon />, text: "ConsultA", link: "/ConsultService" },
+          { icon: <SettingsOutlinedIcon />, text: "Settings", link: "/home" },
+            { icon: <SettingsOutlinedIcon />, text: "Pharmacy", link: "/MyMapComponent" },
+          { icon: <LogoutIcon />, text: "Logout", link: "/" },
+          // { icon: <DarkModeIcon />, text: "Toggle Dark Mode", link: "#" }
         ].map((item, index) => (
           <Link key={index} to={item.link} style={{ textDecoration: "none", color: "inherit" }}>
             <ListItem disablePadding>
@@ -167,10 +171,10 @@ const RegularSidebar = () => {
           </Link>
         ))}
         <ListItem disablePadding>
-          <ListItemButton onClick={handleLogout}>
-            <ListItemIcon><LogoutIcon /></ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItemButton>
+          {/*<ListItemButton onClick={handleLogout}>*/}
+          {/*  <ListItemIcon><LogoutIcon /></ListItemIcon>*/}
+          {/*  <ListItemText primary="Logout" />*/}
+          {/*</ListItemButton>*/}
         </ListItem>
       </List>
     </Box>

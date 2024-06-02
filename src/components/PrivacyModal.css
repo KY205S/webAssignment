@@ -1,0 +1,60 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.privacy-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 改为 flex-start */
+  padding-top: 200px; /* 增加顶部填充 */
+  z-index: 1000;
+}
+
+.privacy-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  width: 90%; /* 增加宽度 */
+  max-width: 600px; /* 增加最大宽度 */
+  padding-bottom: 30px; /* 增加底部填充，使整体更高 */
+}
+
+h2 {
+  margin-top: 0;
+}
+
+p {
+  text-align: left;
+  margin-bottom: 20px; /* 增加正文到按钮的距离 */
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.necessary-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+}
+
+.accept-all-btn {
+  background-color: #1976d2;
+  color: white;
+}
