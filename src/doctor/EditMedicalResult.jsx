@@ -7,8 +7,8 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import UploadIcon from '@mui/icons-material/Upload';
 import AuthService from "../components/AuthService";
-import { useParams } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
 
 
 const MedicalConsultationDetails = () => {
@@ -23,6 +23,7 @@ const MedicalConsultationDetails = () => {
   const [examinationDialogOpen, setExaminationDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const navigate = useNavigate();
 
 
 
@@ -196,33 +197,39 @@ const MedicalConsultationDetails = () => {
 
 
   return (
-    <Box>
+    <Box textAlign="left">
       <Card>
         <CardContent>
           <Typography variant="h4" style={{fontWeight: 'bold'}}>Medical Consultation</Typography>
           <Box mt={2} bgcolor="lightblue" p={2}>
             <Typography variant="h6">Basic Info</Typography>
           </Box>
+
           <Box display="flex" alignItems="center" mb={1}>
     <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Name:</Typography>
     <Typography>{patientInfo.patient_name}</Typography>
   </Box>
+
   <Box display="flex" alignItems="center" mb={1}>
     <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Age:</Typography>
     <Typography>{patientInfo.age}</Typography>
   </Box>
+
   <Box display="flex" alignItems="center" mb={1}>
     <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Doctor:</Typography>
     <Typography>{patientInfo.doctor_name}</Typography>
   </Box>
+
   <Box display="flex" alignItems="center" mb={1}>
     <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Appointment Number:</Typography>
     <Typography>{patientInfo.appointmentNumber}</Typography>
   </Box>
+
   <Box display="flex" alignItems="center" mb={1}>
     <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Description:</Typography>
     <Typography>{patientInfo.description}</Typography>
   </Box>
+
           <Box mt={2} bgcolor="lightblue" p={2}>
             <Typography variant="h6">Diagnostic Result</Typography>
           </Box>
@@ -358,6 +365,14 @@ const MedicalConsultationDetails = () => {
 
 
       <Box mt={2} display="flex" justifyContent="flex-end">
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => navigate('/DoctorAppointmentList')}
+          style={{width: "90px",  marginRight: '20px', borderColor: 'blue' }}
+          >
+          Back
+        </Button>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           Submit
         </Button>

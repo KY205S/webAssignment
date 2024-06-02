@@ -78,7 +78,7 @@ const OnlineConsult = () => {
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-      <Card style={{ width: '90%', height: '80%', overflow: 'hidden' }}>
+      <Card style={{ width: '90%', height: '80%', overflow: 'hidden',margin: '2vh auto',position: 'relative', top: '-40px' }}>
         <CardContent style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '20px', textAlign: 'center' }}>
             Online Consultation Chat
@@ -97,7 +97,7 @@ const OnlineConsult = () => {
             ))}
           </List>
 
-          <Box style={{ display: 'flex', padding: '10px' }}>
+          <Box style={{ display: 'flex', padding: '10px 20px 40px 20px' }}>
             <TextField
               label="Type a message..."
               variant="outlined"

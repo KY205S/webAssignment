@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { ErrorOutline } from "@mui/icons-material";
 import AuthService from "../components/AuthService";
+import { useNavigate } from 'react-router-dom';
 
 const AppointmentListPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -36,7 +37,7 @@ const AppointmentListPage = () => {
   useEffect(() => {
     setIsLoading(true);
     AuthService.makeAuthRequest("http://10.14.149.222:8000/patientappointmentlist", {
-      method: "GET",
+      method: 'GET',
     })
       .then((response) => {
         if (!response.ok) {
@@ -113,6 +114,11 @@ const AppointmentListPage = () => {
     });
 };
 
+  const goToAppointmentDetail = (appointmentId) => {
+    navigate(`/patient/medical-records/${appointmentId}`);
+  };
+
+  const navigate = useNavigate();
 
   // 渲染取消按钮
   const renderStatusButtons = (status, appointmentNumber) => {
@@ -157,52 +163,53 @@ const AppointmentListPage = () => {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 800 }} aria-label="appointment table">
             <TableHead>
-              <TableRow>
-                <TableCell align="center">Appointment Number</TableCell>
-                <TableCell align="center">Doctor</TableCell>
-                <TableCell align="center">Consultation Time</TableCell>
-                <TableCell align="center">Location</TableCell>
-                <TableCell align="center">Description</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Options</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {appointments.map((appointment) => (
-                <TableRow
-                  key={appointment.appointment_number}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="center">{appointment.appointment_number || "N/A"}</TableCell>
-                  <TableCell align="center">{appointment.doctor_name}</TableCell>
-                  <TableCell align="center">{appointment.time}</TableCell>
-                  <TableCell align="center">{appointment.location}</TableCell>
-                  <TableCell align="center">
-                    <Tooltip title={appointment.description} arrow>
-                      <Typography
-                        sx={{
-                          maxWidth: "200px",
-                          display: "-webkit-box",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        {appointment.description}
-                      </Typography>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell align="center" style={getStatusStyles(appointment.status)}>
-                    {appointment.status}
-                    {renderReasonIcon(appointment.status, appointment.advice)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {renderStatusButtons(appointment.status, appointment.appointment_number)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+  <TableRow>
+    <TableCell align="center">Appointment Number</TableCell>
+    <TableCell align="center">Patient Name</TableCell>
+    <TableCell align="center">Time</TableCell>
+    <TableCell align="center">Location</TableCell>
+    <TableCell align="center">Description</TableCell>
+    <TableCell align="center">Status</TableCell>
+    <TableCell align="center">Options</TableCell>
+  </TableRow>
+</TableHead>
+
+ <TableBody>
+  {appointments.map((appointment) => (
+    <TableRow
+      key={appointment.appointment_number}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.appointment_number}</TableCell>
+      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.patient_name}</TableCell>
+      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.time}</TableCell>
+      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.location}</TableCell>
+      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>
+        <Tooltip title={appointment.description} arrow>
+        <Typography
+          sx={{
+            maxWidth: "200px",
+            display: "-webkit-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {appointment.description}
+        </Typography>
+      </Tooltip>
+      </TableCell>
+      <TableCell align="center" style={getStatusStyles(appointment.status)}>
+        {appointment.status}
+        {renderReasonIcon(appointment.status, appointment.advice)}
+      </TableCell>
+      <TableCell align="center">
+        {renderStatusButtons(appointment.status, appointment.appointment_number)}
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
           </Table>
           {isLoading && <Typography sx={{ m: 2 }}>Loading...</Typography>}
           {error && (

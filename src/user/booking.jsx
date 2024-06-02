@@ -130,187 +130,197 @@ const Booking = () => {
     );
   };
 
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Box>
-          {step === 1 && (
-            <Box
-              marginLeft={45}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                p: 2,
-              }}
+
+const departmentStructure = [
+  {
+    category: "Internal Medicine",
+    subdepartments: ["Cardiology", "Gastroenterology", "Endocrinology", "Nephrology"]
+  },
+  {
+    category: "Surgery",
+    subdepartments: ["General Surgery", "Cardiac Surgery", "Plastic Surgery", "Orthopedic Surgery"]
+  },
+  {
+    category: "Maternal and Child Health",
+    subdepartments: ["Obstetrics", "Gynecology"]
+  },
+  {
+    category: "",
+    subdepartments: ["Neonatology", "Pediatric Internal Medicine", "Pediatric Neurology", "Pediatric Oncology"]
+  },
+  {
+    category: "Ophthalmology and Otorhinolaryngology",
+    subdepartments: ["Eye", "Retina", "Cataract and Refractive Surgery", "Ocular Trauma and Orbit Surgery"]
+  },
+  {
+    category: "",
+    subdepartments: ["Otology", "Rhinology", "Laryngology"]
+  },
+  {
+    category: "Mental Health",
+    subdepartments: ["Adult Psychiatry", "Child and Adolescent Psychiatry", "Geriatric Psychiatry"]
+  },
+  {
+    category: "",
+    subdepartments: ["Clinical Psychology", "Psychotherapy", "Rehabilitation Psychology"]
+  }
+];
+
+
+  const handleSelectDepartment = (department) => {
+    setSelectedDepartment(department);
+  };
+
+  const renderDepartments = () => {
+  return departmentStructure.map((department) => (
+    <div key={department.category}>
+      <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>{department.category}</Typography>
+      <Grid container spacing={2}>
+        {department.subdepartments.map((subdepartment) => (
+          <Grid item xs={12} sm={6} md={3} key={subdepartment}>
+            <Button
+              fullWidth
+              variant={selectedDepartment === subdepartment ? "contained" : "outlined"}
+              onClick={() => handleSelectDepartment(subdepartment)}
             >
-              <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                  <Typography variant="h5" component="h1" sx={{mt: 2}}>
-                  Booking Page
-                  </Typography>
-                </Box>
+              {subdepartment}
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  ));
+};
 
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                  }}
-                >
-                  <Stack spacing={3} alignItems="center">
-                    <Typography variant="h6">Select the Department</Typography>
-                  </Stack>
 
-                  <Stack direction="column" spacing={2}>
-                    {[
-                      "Internal",
-                      "Urology",
-                      "Digestive",
-                      "Pediatrics",
-                      "Eye",
-                      "Neurosurgery",
-                      "Dermatology",
-                      "Orthopedics",
-                    ].map((department) => (
-                      <Button
-                        key={department}
-                        variant={
-                          selectedDepartment === department
-                            ? "contained"
-                            : "outlined"
-                        }
-                        onClick={() => handleSelect(department)}
-                      >
-                        {department}
-                      </Button>
-                    ))}
-                  </Stack>
-
-                  <TextField
-                    fullWidth
-                    id="condition"
-                    label="Describe Your conditions"
-                    multiline
-                    rows={2}
-                    variant="outlined"
-                    value={otherCondition}
-                    onChange={handleOtherText}
-                    sx={{
-                      width: "80%",
-                      marginTop: 6,
-                      marginLeft: 4,
-                    }}
-                  />
-
-                  <Button
-                    onClick={handleNext}
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1, width: "60%" }}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Loading..." : "Next"}
-                  </Button>
-
-                  <Button color="primary" sx={{ mt: 1 }}>
-                    Back to login
-                  </Button>
-                </CardContent>
-              </Card>
-            </Box>
-          )}
-        </Box>
-
-        {step === 2 && (
-          <Box
-            marginLeft={35}
-            sx={{
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100vh",
-              p: 2,
-            }}
-          >
-            <Card sx={{ maxWidth: 2000, minWidth: 800, width: "100%", m: 2 }}>
-              <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-              >
-                <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                <Typography variant="h5" component="h1" sx={{mt: 2}}>
-                  Available Booking Time
-                </Typography>
-              </Box>
-              <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  gap: 2,
-                  alignItems: "center",
-                }}
-              >
-                <Paper elevation={3} sx={{ padding: 2 }}>
-                  <Typography variant="h6" align="center" gutterBottom>
-                    Select Your Preferred Date and Time
-                  </Typography>
-                  <Grid container spacing={2}>
-                    {Object.entries(appointments).map(([date, times]) => (
-                      <Grid item xs={12} sm={2} key={date}>
-                        <Typography variant="h6">{date}</Typography>
-                        {times.map((time) => (
-                          <Button
-                            key={time}
-                            variant={
-                              isTimeSelected(date, time)
-                                ? "contained"
-                                : "outlined"
-                            }
-                            onClick={() => handleSelectTime(date, time)}
-                            sx={{ margin: "4px", width: "64px" }}
-                          >
-                            {time}
-                          </Button>
-                        ))}
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Paper>
+  return (
+  <div>
+    <form onSubmit={handleSubmit}>
+      {step === 1 && (
+        <Box sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          padding: 2
+        }}>
+          <Card sx={{ width: "100%", maxWidth: "none" }}>
+            <CardContent>
+              <Typography variant="h4" component="h1" sx={{ textAlign: "center", marginBottom: 2 }}>
+                Select the Department
+              </Typography>
+              {renderDepartments()}
+              {/*<Grid container spacing={2}>*/}
+              {/*  {departmentStructure.map((section) => (*/}
+              {/*    <React.Fragment key={section.category}>*/}
+              {/*      <Grid item xs={12}>*/}
+              {/*        <Typography variant="h5" sx={{ mt: 2 }}>{section.category}</Typography>*/}
+              {/*      </Grid>*/}
+              {/*      {section.departments.map((department) => (*/}
+              {/*        <Grid item xs={12} sm={4} md={3} key={department}>*/}
+              {/*          <Button*/}
+              {/*            fullWidth*/}
+              {/*            variant={selectedDepartment === department ? "contained" : "outlined"}*/}
+              {/*            onClick={() => handleSelect(department)}*/}
+              {/*            sx={{ height: "56px", height: "36px" }} // Ensures buttons are taller*/}
+              {/*          >*/}
+              {/*            {department}*/}
+              {/*          </Button>*/}
+              {/*        </Grid>*/}
+              {/*      ))}*/}
+              {/*    </React.Fragment>*/}
+              {/*  ))}*/}
+              {/*</Grid>*/}
+              <TextField
+                fullWidth
+                label="Describe Your Conditions"
+                multiline
+                rows={4}
+                margin="normal"
+                value={otherCondition}
+                onChange={(e) => setOther(e.target.value)}
+                sx={{ mt: 4 }}
+              />
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
                 <Button
                   variant="contained"
                   color="primary"
+                  onClick={handleNext}
+                  disabled={!selectedDepartment || isLoading}
+                  sx={{ minWidth: "150px" }}
+                >
+                  {isLoading ? "Loading..." : "Next >>"}
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+
+      {step === 2 && (
+        <Box sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          padding: 2
+        }}>
+          <Card sx={{ width: "100%", maxWidth: "none" }}>
+            <CardContent>
+              <Typography variant="h4" component="h1" sx={{ textAlign: "center", marginBottom: 2 }}>
+                Select Your Preferred Date and Time
+              </Typography>
+              <Grid container spacing={2}>
+                {Object.entries(appointments).map(([date, times]) => (
+                  <Grid item xs={12} key={date}>
+                    <Typography variant="subtitle1">{date}</Typography>
+                    {times.map((time) => (
+                      <Button
+                        key={time}
+                        variant={isTimeSelected(date, time) ? "contained" : "outlined"}
+                        onClick={() => handleSelectTime(date, time)}
+                        sx={{ margin: "4px", minWidth: "100px" }} // Ensures buttons have uniform size
+                      >
+                        {time}
+                      </Button>
+                    ))}
+                  </Grid>
+                ))}
+              </Grid>
+              <TextField
+                fullWidth
+                label="Describe Your Conditions"
+                multiline
+                rows={4}
+                variant="outlined"
+                value={otherCondition}
+                onChange={(e) => setOther(e.target.value)}
+                sx={{ mt: 4 }}
+              />
+              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                <Button variant="outlined" color="primary" onClick={handleBack} sx={{ minWidth: "120px" }}>
+                  Back
+                </Button>
+                <Button
                   type="submit"
-                  sx={{ mt: 1, width: "100%" }}
+                  variant="contained"
+                  color="primary"
+                  disabled={!selectedTime}
+                  sx={{ minWidth: "120px" }}
                 >
                   Submit
                 </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+    </form>
+  </div>
+);
 
-                <Button
-                  onClick={handleBack}
-                  variant="outlined"
-                  color="primary"
-                  sx={{ mt: 0, width: "100%" }}
-                >
-                  Back
-                </Button>
-              </CardContent>
-            </Card>
-          </Box>
-        )}
-      </form>
-    </div>
-  );
 };
 
 export default Booking;

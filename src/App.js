@@ -34,10 +34,29 @@ import OnlineConsult from './components/OnlineConsult'
 import MedicalRecords from './doctor/EditMedicalResult'
 import ExaminationReport from "./user/ExaminationReport"
 import ConsultService from "./admin/ConsultService"
+import PrivacyModal from './components/PrivacyModal';
+import MapLocation from "./components/MyMapComponent"
+import MyMapComponent from "./components/MyMapComponent"
+import PatientMedicalRecords from './user/ViewMedicalResult'
+
+// function App() {
+//   const [isLoggedIn, setIsLoggedIn] = useState(() => {
+//     return localStorage.getItem("isLoggedIn") === "true";
+//   });
+//
+//   useEffect(() => {
+//     // 每当 isLoggedIn 状态变化时更新 localStorage
+//     localStorage.setItem("isLoggedIn", isLoggedIn);
+//   }, [isLoggedIn]);
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem("isLoggedIn") === "true";
+  });
+
+  const [showPrivacyModal, setShowPrivacyModal] = useState(() => {
+    return !localStorage.getItem("gdprConsent");
   });
 
   useEffect(() => {
@@ -45,28 +64,36 @@ function App() {
     localStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
+  const handlePrivacyConsent = (consentType) => {
+    localStorage.setItem('gdprConsent', consentType);
+    setShowPrivacyModal(false);
+  };
+
 
 
  return (
+    <div className="App">
+      {showPrivacyModal && (
+        <PrivacyModal onClose={handlePrivacyConsent} />
+      )}
     <Router>
       <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
         {isLoggedIn && <Navbar />}
         <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="space-between"
-          alignItems="flex-start"  // 确保内容顶部对齐
-        >
+  direction="row"
+  justifyContent="space-between"
+  alignItems="flex-start"
+>
           {isLoggedIn && <Sidebar />}
         <Box
-  className="main-content"
-  component="main"
-  sx={{
-    flexGrow: 1,
-    p: 3
-  }}
->
-                <Routes>
+   className="main-content"
+   component="main"
+   sx={{
+     flexGrow: 1,
+     p: 3,
+     marginLeft: '240px' // 与侧边栏宽度一致
+   }}
+>            <Routes>
                   <Route path="/" element={<Welcome />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
@@ -91,11 +118,13 @@ function App() {
                   <Route path="/DoctorAppointmentList" element={<DoctorAppointmentList />} />
                   <Route path="/PatientAppointmentList" element={<PatientAppointmentList />} />
                   {/*<Route path="/EditMedicalResult" element={<EditMedicalResult />} />*/}
-                  <Route path="/ViewMedicalResult" element={<ViewMedicalResult />} />
+                  {/*<Route path="/ViewMedicalResult" element={<ViewMedicalResult />} />*/}
                   <Route path="/OnlineConsult" element={<OnlineConsult />} />
                   <Route path="/medical-records/:appointmentId" element={<MedicalRecords />} />
+                  <Route path="/patient/medical-records/:appointmentId" element={<PatientMedicalRecords />} />
                   <Route path="/ExaminationReport" element={<ExaminationReport />} />
                   <Route path="/ConsultService" element={<ConsultService />} />
+                  <Route path="/MyMapComponent" element={<MyMapComponent />} />
 
                   <Route
                     path="/changePassword"
@@ -106,6 +135,7 @@ function App() {
         </Stack>
       </MyContext.Provider>
     </Router>
+        </div>
   );
 }
 
