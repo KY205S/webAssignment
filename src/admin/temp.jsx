@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Box, Stack } from '@mui/material';
-import Sidebar from './components/Sidebar';
-import Sidebar2 from './components/Sidebar2';
-import Sidebar3 from './components/Sidebar3';
+import "./App.css";
+import * as React from "react";
+import { useEffect } from "react";
+import Sidebar from "./components/Sidebar";
+import Rightbar from "./components/Rightbar";
+import Navbar from "./components/Navbar";
+import { Box, Stack } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import History from "./user/History";
 import Welcome from "./components/Welcome";
+import { useState } from "react";
 import MyContext from "./components/Context1";
 import HomeU from "./user/HomeU";
-import HomeD from "./doctor/doctor";
+import HomeD from "./doctor/HomeD";
 import Booking from "./user/booking";
 import Arrangement from "./user/Arrangement";
 import Record from "./user/Record";
@@ -35,55 +38,54 @@ import PrivacyModal from './components/PrivacyModal';
 import MapLocation from "./components/MyMapComponent"
 import MyMapComponent from "./components/MyMapComponent"
 import PatientMedicalRecords from './user/ViewMedicalResult'
-import Navbar from "./components/Navbar";
 
+// function App() {
+//   const [isLoggedIn, setIsLoggedIn] = useState(() => {
+//     return localStorage.getItem("isLoggedIn") === "true";
+//   });
+//
+//   useEffect(() => {
+//     // 每当 isLoggedIn 状态变化时更新 localStorage
+//     localStorage.setItem("isLoggedIn", isLoggedIn);
+//   }, [isLoggedIn]);
 
-function SidebarRenderer() {
-  const location = useLocation();  // Now within Router context
-
-  const renderSidebar = () => {
-    const path = location.pathname;
-    if (['/', '/login', '/register', '/history'].includes(path)) {
-      return null; // No sidebar for these routes
-    } else if (['/user', '/booking', '/PatientAppointmentList', '/OnlineConsult', '/patient/medical-records/:appointmentId', '/ExaminationReport', '/MyMapComponent'].includes(path)) {
-      return <Sidebar />;
-    } else if (['/doctor', '/manageBooking', '/DoctorAppointmentList', '/medical-records/:appointmentId'].includes(path)) {
-      return <Sidebar2 />;
-    } else if (['/admin', '/registerDoctor', '/Approval', '/ConsultService'].includes(path)) {
-      return <Sidebar3 />;
-    }
-  };
-
-  return renderSidebar();
-}
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
-  const [showPrivacyModal, setShowPrivacyModal] = useState(() => !localStorage.getItem("gdprConsent"));
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("isLoggedIn") === "true";
+  });
+
+  const [showPrivacyModal, setShowPrivacyModal] = useState(() => {
+    return !localStorage.getItem("gdprConsent");
+  });
 
   useEffect(() => {
+    // 每当 isLoggedIn 状态变化时更新 localStorage
     localStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
-  function handlePrivacyConsent(consentType) {
+  const handlePrivacyConsent = (consentType) => {
     localStorage.setItem('gdprConsent', consentType);
     setShowPrivacyModal(false);
   };
 
 
-  return (
+
+ return (
     <div className="App">
-      {showPrivacyModal && <PrivacyModal onClose={handlePrivacyConsent} />}
-      <Router>
-        <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-          {isLoggedIn && <Navbar />}
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="flex-start"
-          >
-            {isLoggedIn && <SidebarRenderer />}
-            <Box
+      {showPrivacyModal && (
+        <PrivacyModal onClose={handlePrivacyConsent} />
+      )}
+    <Router>
+      <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        {isLoggedIn && <Navbar />}
+        <Stack
+  direction="row"
+  justifyContent="space-between"
+  alignItems="flex-start"
+>
+          {isLoggedIn && <Sidebar />}
+        <Box
    className="main-content"
    component="main"
    sx={{
@@ -130,10 +132,10 @@ function App() {
                   />
                 </Routes>
           </Box>
-          </Stack>
-        </MyContext.Provider>
-      </Router>
-    </div>
+        </Stack>
+      </MyContext.Provider>
+    </Router>
+        </div>
   );
 }
 
