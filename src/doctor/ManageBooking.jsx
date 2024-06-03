@@ -21,8 +21,8 @@ function getFormattedDateRange() {
   const endDate = new Date(currentYear, currentMonth, currentDayOfMonth + 7);
 
   const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-  const startDateFormatted = startDate.toLocaleDateString("en-US", options);
-  const endDateFormatted = endDate.toLocaleDateString("en-US", options);
+  const startDateFormatted = startDate.toLocaleDateString("en-GB", options);
+  const endDateFormatted = endDate.toLocaleDateString("en-GB", options);
 
   return `${startDateFormatted} - ${endDateFormatted}`;
 }
@@ -38,8 +38,8 @@ function getFormattedDateRange2() {
   const endDate = new Date(currentYear, currentMonth, currentDayOfMonth + 14);
 
   const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-  const startDateFormatted = startDate.toLocaleDateString("en-US", options);
-  const endDateFormatted = endDate.toLocaleDateString("en-US", options);
+  const startDateFormatted = startDate.toLocaleDateString("en-GB", options);
+  const endDateFormatted = endDate.toLocaleDateString("en-GB", options);
 
   return `${startDateFormatted} - ${endDateFormatted}`;
 }
@@ -48,13 +48,13 @@ const ManageBooking = () => {
   const dates = Array.from({ length: 7 }, (_, i) => {
   const date = new Date();
   date.setDate(date.getDate() + i + 1);
-  return date.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: 'numeric' });
+  return date.toLocaleDateString("en-GB", { day: '2-digit', month: '2-digit', year: 'numeric' });
 });
 
 const nextDates = Array.from({ length: 7 }, (_, i) => {
   const date = new Date();
   date.setDate(date.getDate() + i + 8); // Start from 8 days later, which is the same day next week
-  return date.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: 'numeric' });
+  return date.toLocaleDateString("en-GB", { day: '2-digit', month: '2-digit', year: 'numeric' });
 });
   const times = [
     "09:00",

@@ -13,7 +13,7 @@ function MyMapComponent() {
   const mapRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "" // 替换为你的 Google Maps API 密钥
+    googleMapsApiKey: "AIzaSyCuH2C8Z1kqBW9-kj916mtxFTDh6MWPEXg" // 替换为你的 Google Maps API 密钥
   });
 
   const onLoad = React.useCallback(function callback(map) {
@@ -26,7 +26,7 @@ function MyMapComponent() {
 
   const fetchPharmacies = () => {
     if (postcode.length > 0) {
-      fetch(`http://10.14.149.222:8000/nearest-pharmacies/?postcode=${postcode.slice(0, 4) + "+" + postcode.slice(4)}`)
+      fetch(`http://10.14.149.222:8000/nearest-pharmacies/?postcode=${postcode}`)
         .then(response => response.json())
         .then(data => {
           setPharmacies(data);

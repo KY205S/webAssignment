@@ -86,7 +86,7 @@ const AdminChat = () => {
     };
 
     try {
-      const response = await AuthService.makeAuthRequest(`http://10.14.149.222:8000/conversation/${selectedConversationId}/send/`, {
+      const response = await AuthService.makeAuthRequest(`http://10.14.149.222:8000/conversation/${selectedConversationId}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -97,7 +97,8 @@ const AdminChat = () => {
       // Assuming the response contains the newly created message
       const newMessageFromResponse = await response.json();
 
-      setMessages(prevMessages => [...prevMessages, newMessageFromResponse]);
+
+      setMessages(prevMessages => [...prevMessages, messageData]); // 使用函数式更新以保证状态的正确更新
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
@@ -105,22 +106,27 @@ const AdminChat = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="flex-start" height="100vh">
-      <Card style={{ width: '20%', overflow: 'auto', marginRight: '10px' }}>
+    <Box display="flex" justifyContent="center" alignItems="flex-start" height="85vh">
+      <Card style={{ width: '20%', overflow: 'auto', marginRight: '10px', height:"100%"}}>
         <CardContent>
           <Typography variant="h6" style={{ fontWeight: 'bold', marginBottom: '10px' }}>
             Conversation List
           </Typography>
           <List>
             {conversations.map((conversation) => (
-              <ListItem key={conversation.conversation_id} button onClick={() => setSelectedConversationId(conversation.conversation_id)}>
-                <ListItemText primary={conversation.patient_name} />
-              </ListItem>
+              <ListItem
+  key={conversation.conversation_id}
+  button
+  onClick={() => setSelectedConversationId(conversation.conversation_id)}
+  selected={selectedConversationId === conversation.conversation_id}
+>
+  <ListItemText primary={conversation.patient_name} />
+</ListItem>
             ))}
           </List>
         </CardContent>
       </Card>
-      <Card style={{ width: '70%', height: '80%', overflow: 'hidden', position: 'relative', top: '0px' }}>
+      <Card style={{ width: '70%', height: '100%', overflow: 'hidden', position: 'relative', top: '0px' }}>
         <CardContent style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '20px', textAlign: 'center' }}>
             Online Consultation Chat

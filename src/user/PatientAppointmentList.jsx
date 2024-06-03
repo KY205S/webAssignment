@@ -90,7 +90,7 @@ const AppointmentListPage = () => {
   };
 
   AuthService.makeAuthRequest(
-    "http://10.14.151.254:8000/update-appointment/",
+    "http://10.14.149.222:8000/update-appointment/",
     {
       method: "POST",
       headers: {
@@ -165,7 +165,7 @@ const AppointmentListPage = () => {
             <TableHead>
   <TableRow>
     <TableCell align="center">Appointment Number</TableCell>
-    <TableCell align="center">Patient Name</TableCell>
+    <TableCell align="center">Doctor Name</TableCell>
     <TableCell align="center">Time</TableCell>
     <TableCell align="center">Location</TableCell>
     <TableCell align="center">Description</TableCell>
@@ -181,7 +181,7 @@ const AppointmentListPage = () => {
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.appointment_number}</TableCell>
-      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.patient_name}</TableCell>
+      <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.doctor_name}</TableCell>
       <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.time}</TableCell>
       <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>{appointment.location}</TableCell>
       <TableCell align="center" onClick={() => goToAppointmentDetail(appointment.appointment_number)}>

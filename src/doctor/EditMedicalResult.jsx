@@ -9,6 +9,8 @@ import UploadIcon from '@mui/icons-material/Upload';
 import AuthService from "../components/AuthService";
 import { Snackbar } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Alert } from '@mui/material';
 
 
 const MedicalConsultationDetails = () => {
@@ -206,27 +208,27 @@ const MedicalConsultationDetails = () => {
           </Box>
 
           <Box display="flex" alignItems="center" mb={1}>
-    <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Name:</Typography>
+    <Typography style={{ fontWeight: 'bold', marginRight: '18px' }}>Name:</Typography>
     <Typography>{patientInfo.patient_name}</Typography>
   </Box>
 
   <Box display="flex" alignItems="center" mb={1}>
-    <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Age:</Typography>
+    <Typography style={{ fontWeight: 'bold', marginRight: '18px' }}>Age:</Typography>
     <Typography>{patientInfo.age}</Typography>
   </Box>
 
   <Box display="flex" alignItems="center" mb={1}>
-    <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Doctor:</Typography>
+    <Typography style={{ fontWeight: 'bold', marginRight: '18px' }}>Doctor:</Typography>
     <Typography>{patientInfo.doctor_name}</Typography>
   </Box>
 
   <Box display="flex" alignItems="center" mb={1}>
-    <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Appointment Number:</Typography>
+    <Typography style={{ fontWeight: 'bold', marginRight: '18px' }}>Appointment Number:</Typography>
     <Typography>{patientInfo.appointmentNumber}</Typography>
   </Box>
 
   <Box display="flex" alignItems="center" mb={1}>
-    <Typography style={{ fontWeight: 'bold', marginRight: '8px' }}>Description:</Typography>
+    <Typography style={{ fontWeight: 'bold', marginRight: '18px' }}>Description:</Typography>
     <Typography>{patientInfo.description}</Typography>
   </Box>
 
@@ -329,7 +331,23 @@ const MedicalConsultationDetails = () => {
       <Dialog open={prescriptionDialogOpen} onClose={() => setPrescriptionDialogOpen(false)}>
     <DialogTitle>Add a Prescription</DialogTitle>
     <DialogContent>
-        <TextField autoFocus margin="dense" label="Medicine Name" type="text" fullWidth value={newPrescription.medicine_name} onChange={handlePrescriptionChange('medicine_name')} />
+        <FormControl fullWidth variant="outlined" style={{ margin: '8px 0' }}>
+            <InputLabel id="medicine-label">Medicine Name</InputLabel>
+            <Select
+                labelId="medicine-label"
+                value={newPrescription.medicine_name}
+                onChange={handlePrescriptionChange('medicine_name')}
+                label="Medicine Name"
+            >
+                <MenuItem value="Amoxicillin">Amoxicillin</MenuItem>
+                <MenuItem value="Atorvastatin">Atorvastatin</MenuItem>
+                <MenuItem value="Diphenhydramine">Diphenhydramine</MenuItem>
+                <MenuItem value="Lorazepam">Lorazepam</MenuItem>
+                <MenuItem value="Lisinopril">Lisinopril</MenuItem>
+                <MenuItem value="Omeprazole">Omeprazole</MenuItem>
+                <MenuItem value="Pseudoephedrine">Pseudoephedrine</MenuItem>
+            </Select>
+        </FormControl>
         <TextField margin="dense" label="Count" type="number" fullWidth value={newPrescription.quantity} onChange={handlePrescriptionChange('quantity')} />
         <TextField margin="dense" label="Note" type="text" fullWidth value={newPrescription.usage_description} onChange={handlePrescriptionChange('usage_description')} />
     </DialogContent>
@@ -342,9 +360,46 @@ const MedicalConsultationDetails = () => {
 <Dialog open={examinationDialogOpen} onClose={() => setExaminationDialogOpen(false)}>
     <DialogTitle>Add an Examination</DialogTitle>
     <DialogContent>
-        <TextField autoFocus margin="dense" label="Examination Name" type="text" fullWidth value={newExamination.exam_name} onChange={handleExaminationChange('exam_name')} />
-        <TextField margin="dense" label="Time" type="date" fullWidth InputLabelProps={{ shrink: true }} InputProps={{ inputProps: { min: getTomorrowDate() } }} value={newExamination.exam_date} onChange={handleExaminationChange('exam_date')} />
-        <TextField margin="dense" label="Note" type="text" fullWidth value={newExamination.exam_description} onChange={handleExaminationChange('exam_description')} />
+        <FormControl fullWidth variant="outlined" style={{ margin: '8px 0' }}>
+            <InputLabel id="exam-type-label">Examination Type</InputLabel>
+            <Select
+                labelId="exam-type-label"
+                value={newExamination.exam_name}
+                onChange={handleExaminationChange('exam_name')}
+                displayEmpty
+                fullWidth
+            >
+
+                <MenuItem value="X-ray">X-ray</MenuItem>
+                <MenuItem value="Blood Test">Blood Test</MenuItem>
+                <MenuItem value="MRI">MRI</MenuItem>
+                <MenuItem value="Electrocardiogram">Electrocardiogram</MenuItem>
+                <MenuItem value="CT Scan">CT Scan</MenuItem>
+                <MenuItem value="Allergy Testing">Allergy Testing</MenuItem>
+
+
+
+
+            </Select>
+        </FormControl>
+        <TextField
+            margin="dense"
+            label="Time"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            InputProps={{ inputProps: { min: getTomorrowDate() } }}
+            value={newExamination.exam_date}
+            onChange={handleExaminationChange('exam_date')}
+        />
+        <TextField
+            margin="dense"
+            label="Note"
+            type="text"
+            fullWidth
+            value={newExamination.exam_description}
+            onChange={handleExaminationChange('exam_description')}
+        />
     </DialogContent>
     <DialogActions>
         <Button onClick={() => setExaminationDialogOpen(false)}>Cancel</Button>
@@ -352,16 +407,16 @@ const MedicalConsultationDetails = () => {
     </DialogActions>
 </Dialog>
 
-      <Snackbar
-      open={snackbarOpen}
-         autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        message={snackbarMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // 设置Snackbar位置
-        ontentProps={{
-        style: { marginTop: '150vh' } // 将Snackbar向下移动，'50vh' 表示视窗高度的50%
-        }}
-      />
+     <Snackbar
+  open={snackbarOpen}
+  autoHideDuration={6000}
+  onClose={() => setSnackbarOpen(false)}
+  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+>
+  <Alert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: '100%' }}>
+    {snackbarMessage}
+  </Alert>
+</Snackbar>
 
 
       <Box mt={2} display="flex" justifyContent="flex-end">

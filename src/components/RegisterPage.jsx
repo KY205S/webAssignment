@@ -115,7 +115,7 @@ const RegisterPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://10.14.150.90:8000/register/")
+    fetch("http://10.14.149.222:8000/register/")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -207,7 +207,7 @@ const RegisterPage = () => {
   //   alert("Invalid identity number. Please check your input.");
   // }
   // axios
-  //     .post("http://localhost:3001/approval", formData)
+  //     .post("http://10.14.149.222:8000/approval", formData)
   //     .then((response) => {
   //       console.log(response.data);
 
@@ -241,7 +241,7 @@ const RegisterPage = () => {
   //       alert("An error occurred while submitting your registration.");
   //     });
   // axios
-  //   .post("http://10.14.150.90:8000/register/", formData)
+  //   .post("http://10.14.149.222:8000/register/", formData)
   //   .then((response) => {
   //     console.log(response.data);
   //     alert("You have successfully registered");
@@ -253,71 +253,44 @@ const RegisterPage = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <Box>
-          {step === 1 && (
-            <Box
-              marginLeft={45}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                p: 2,
-              }}
-            >
-              <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                  <Typography variant="h5" component="h1" sx={{mt: 2}}>
-                  Patient Register
-                  </Typography>
-                </Box>
-
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                  }}
-                >
+        <Box sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center", height: "90vh", paddingTop: "0px", paddingBottom: -6, marginTop: -1, marginBottom: -6, marginLeft: "80px"}}>
+          <Card sx={{ maxWidth: 1000, width: "100%", m: 2,marginTop: "0px" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center",marginTop: "0px" }}>
+              {/*<img src={group13Logo} alt="Group13 Logo" style={{ maxWidth: "100px", marginTop: "20px" }} />*/}
+              <Typography variant="h4" component="h1" sx={{ mt: 2 }}>
+                Patient Register
+              </Typography>
+            </Box>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="IdentityNumber"
                     label="Identity Number"
                     variant="outlined"
                     value={identityNumber}
-                    onChange={handleIdentityChange}
+                    onChange={(e) => setIdentityNumber(e.target.value)}
                     InputProps={{
-                      inputProps: {
-                        maxLength: 11,
-                      },
-                      startAdornment: (
-                        <FingerprintIcon
-                          sx={{ color: "action.active", mr: 1 }}
-                        />
-                      ),
+                      inputProps: { maxLength: 11 },
+                      startAdornment: <FingerprintIcon sx={{ color: "action.active", mr: 1 }} />,
                     }}
                   />
-
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="input-email"
                     label="Email Address"
                     variant="outlined"
                     value={email}
-                    onChange={handleEmailChange}
+                    onChange={(e) => setEmail(e.target.value)}
                     InputProps={{
-                      startAdornment: (
-                        <Email sx={{ color: "action.active", mr: 1 }} />
-                      ),
+                      startAdornment: <Email sx={{ color: "action.active", mr: 1 }} />,
                     }}
                   />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="input-password"
@@ -327,11 +300,7 @@ const RegisterPage = () => {
                     value={password}
                     onChange={handlePasswordChange}
                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockIcon sx={{ color: "action.active" }} />
-                        </InputAdornment>
-                      ),
+                      startAdornment: <LockIcon sx={{ color: "action.active", mr: 1 }} />,
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -346,6 +315,8 @@ const RegisterPage = () => {
                       ),
                     }}
                   />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="input-password2"
@@ -357,11 +328,7 @@ const RegisterPage = () => {
                     error={error}
                     helperText={error ? "Passwords don't match" : ""}
                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockIcon sx={{ color: "action.active" }} />
-                        </InputAdornment>
-                      ),
+                      startAdornment: <LockIcon sx={{ color: "action.active", mr: 1 }} />,
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -376,34 +343,34 @@ const RegisterPage = () => {
                       ),
                     }}
                   />
-
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="firstName"
                     label="First Name"
                     variant="outlined"
                     value={firstName}
-                    onChange={handleFirstNameChange}
+                    onChange={(e) => setFirstName(e.target.value)}
                     InputProps={{
-                      startAdornment: (
-                        <AccountCircle sx={{ color: "action.active", mr: 1 }} />
-                      ),
+                      startAdornment: <AccountCircle sx={{ color: "action.active", mr: 1 }} />,
                     }}
                   />
-
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="lastName"
                     label="Last Name"
                     variant="outlined"
                     value={lastName}
-                    onChange={handleLastNameChange}
+                    onChange={(e) => setLastName(e.target.value)}
                     InputProps={{
-                      startAdornment: (
-                        <AccountCircle sx={{ color: "action.active", mr: 1 }} />
-                      ),
+                      startAdornment: <AccountCircle sx={{ color: "action.active", mr: 1 }} />,
                     }}
                   />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     id="phoneNumber"
@@ -411,63 +378,55 @@ const RegisterPage = () => {
                     type="Number"
                     variant="outlined"
                     value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                     InputProps={{
-                      startAdornment: (
-                        <PhoneAndroidIcon
-                          sx={{ color: "action.active", mr: 1 }}
-                        />
-                      ),
+                      startAdornment: <PhoneAndroidIcon sx={{ color: "action.active", mr: 1 }} />,
                     }}
                   />
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12}>
-                      <Typography variant="body1" gutterBottom>
-                        Date of Birth
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        label="Day"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        variant="outlined"
-                        value={birthDay}
-                        onChange={handleDayChange}
-                        inputProps={{ min: 1, max: 31 }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        label="Month"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        variant="outlined"
-                        value={birthMonth}
-                        onChange={handleMonthChange}
-                        inputProps={{ min: 1, max: 12 }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField
-                        label="Year"
-                        type="number"
-                        InputLabelProps={{ shrink: true }}
-                        variant="outlined"
-                        value={birthYear}
-                        onChange={handleYearChange}
-                        inputProps={{
-                          min: 1900,
-                          max: new Date().getFullYear(),
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-
-                  <FormControl
-                    component="fieldset"
-                    sx={{ alignSelf: "flex-start", marginLeft: 0 }}
-                  >
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" gutterBottom>
+                    Date of Birth
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <TextField
+                    label="Day"
+                    type="number"
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    value={birthDay}
+                    onChange={(e) => setBirthDay(e.target.value)}
+                    inputProps={{ min: 1, max: 31 }}
+                    sx={{ height: 40 }}
+                  />
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <TextField
+                    label="Month"
+                    type="number"
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    value={birthMonth}
+                    onChange={(e) => setBirthMonth(e.target.value)}
+                    inputProps={{ min: 1, max: 12 }}
+                    sx={{ height: 40 }}
+                  />
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <TextField
+                    label="Year"
+                    type="number"
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    value={birthYear}
+                    onChange={(e) => setBirthYear(e.target.value)}
+                    inputProps={{ min: 1900, max: new Date().getFullYear() }}
+                    sx={{ height: 40 }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl component="fieldset" sx={{ marginTop: 2 }}>
                     <FormLabel component="legend">Gender</FormLabel>
                     <RadioGroup
                       row
@@ -476,45 +435,22 @@ const RegisterPage = () => {
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
                     >
-                      <FormControlLabel
-                        value="male"
-                        control={<Radio />}
-                        label="Male"
-                      />
-                      <FormControlLabel
-                        sx={{ marginLeft: 5 }}
-                        value="female"
-                        control={<Radio />}
-                        label="Female"
-                      />
-                      <FormControlLabel
-                        sx={{ marginLeft: 5 }}
-                        value="neutral"
-                        control={<Radio />}
-                        label="Neutral"
-                      />
+                      <FormControlLabel value="male" control={<Radio />} label="Male" />
+                      <FormControlLabel sx={{ marginLeft: 8 }} value="female" control={<Radio />} label="Female" />
+                      <FormControlLabel sx={{ marginLeft: 8 }} value="neutral" control={<Radio />} label="Neutral" />
                     </RadioGroup>
                   </FormControl>
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1, width: "100%" }}
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
-
-                  <Button color="primary" sx={{ mt: 1 }}>
-                    Back to login
-                  </Button>
-                </CardContent>
-              </Card>
-            </Box>
-          )}
+                </Grid>
+              </Grid>
+              <Button variant="contained" color="primary" sx={{ mt: 3, width: "100%" }} type="submit">
+                Submit
+              </Button>
+              <Button color="primary" sx={{ mt: 1 }} onClick={() => navigate("/login")}>
+                Back to login
+              </Button>
+            </CardContent>
+          </Card>
         </Box>
-
-        {/* Personal information register box */}
       </form>
     </div>
   );
