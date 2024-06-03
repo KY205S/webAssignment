@@ -18,23 +18,27 @@ const Approval = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(`${baseUrl}/approval`, {
-        headers: {
-          Authorization: `Bearer ${AuthService.getToken()}`
-        }
-      })
-      .then((response) => {
-        console.log("Get data:", response.data);
-        setUsers(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-        setError(error.message);
-        setIsLoading(false);
-      });
+    AuthService.makeAuthRequest(`http://10.14.149.222:8000/approval`, {
+      method: 'GET'
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Get data:", data);
+      setUsers(data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+      setError(error.message);
+      setIsLoading(false);
+    });
   }, []);
+
 
   const handleApprovalChange = (id, status) => {
     const approvalValue = status === "Approved" ? 1 : 0; // Assuming '1' for approved and '0' for declined
@@ -47,29 +51,34 @@ const Approval = () => {
     console.log("Posting to backend:", postData);
 
     // Send the data to the backend
-    axios
-      .post(`${baseUrl}/confirm-registration/`, postData, {
-        headers: {
-          Authorization: `Bearer ${AuthService.getToken()}`
+    AuthService.makeAuthRequest(`http://10.14.149.222:8000/confirm-registration/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error posting approval status");
+      }
+      return response.json();
+    })
+    .then((response) => {
+      console.log("Response from backend:", response);
+      // Update the UI by setting the user's approvalState
+      setUsers(users.map(user => {
+        if (user.id === id) {
+          return { ...user, status: status };
         }
-      })
-      .then((response) => {
-        console.log("Response from backend:", response.data);
-
-        // Update the UI by setting the user's approvalState
-        setUsers(
-          users.map((user) => {
-            if (user.id === id) {
-              return { ...user, status: status };
-            }
-            return user;
-          })
-        );
-      })
-      .catch((error) => {
-        console.error("Error posting approval status:", error);
-      });
+        return user;
+      }));
+    })
+    .catch((error) => {
+      console.error("Error posting approval status:", error);
+    });
   };
+
 
   const handleApprove = (id) => {
     const confirmApproval = window.confirm(
@@ -160,7 +169,7 @@ const Approval = () => {
         py: 1,
         position: 'absolute',
         bottom: 0,
-        right: 120,
+        right: 80,
       }}
       onClick={() => navigate("/admin")}
     >

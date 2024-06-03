@@ -149,14 +149,16 @@ const RegularSidebar = () => {
       <List>
         {[
           { icon: <AddBoxOutlinedIcon />, text: "Booking", link: "/booking" },
-          { icon: <ListAltIcon />, text: "Arrangement", link: "/arrangement" },
+          { icon: <ListAltIcon />, text: "Approval", link: "/approval" },
+            { icon: <ListAltIcon />, text: "Schedule", link: "/manageBooking" },
           // { icon: <AssignmentOutlinedIcon />, text: "Records", link: "/record" },
           { icon: <ListAltIcon />, text: "AppointmentD", link: "/DoctorAppointmentList" },
           { icon: <ListAltIcon />, text: "AppointmentU", link: "/PatientAppointmentList" },
           { icon: <AnalyticsOutlinedIcon />, text: "Examination", link: "/ExaminationReport" },
           { icon: <MessageOutlinedIcon />, text: "ConsultU", link: "/OnlineConsult" },
           { icon: <MessageOutlinedIcon />, text: "ConsultA", link: "/ConsultService" },
-          { icon: <SettingsOutlinedIcon />, text: "Settings", link: "/home" },
+          { icon: <SettingsOutlinedIcon />, text: "ProfileD", link: "/doctor" },
+            { icon: <SettingsOutlinedIcon />, text: "ProfileU", link: "/user" },
             { icon: <SettingsOutlinedIcon />, text: "Pharmacy", link: "/MyMapComponent" },
           { icon: <LogoutIcon />, text: "Logout", link: "/" },
           // { icon: <DarkModeIcon />, text: "Toggle Dark Mode", link: "#" }

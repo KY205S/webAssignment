@@ -13,7 +13,7 @@ function MyMapComponent() {
   const mapRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCuH2C8Z1kqBW9-kj916mtxFTDh6MWPEXg" // 替换为你的 Google Maps API 密钥
+    googleMapsApiKey: "" // 替换为你的 Google Maps API 密钥
   });
 
   const onLoad = React.useCallback(function callback(map) {
