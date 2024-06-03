@@ -118,24 +118,31 @@ const LoginPage = () => {
     axios
       .post("http://10.14.149.222:8000/login/", formData)
       .then((response) => {
-  if (response.status === 200) {
-    AuthService.setToken(response.data.access_token); // JWT
-    const role = response.data.role; // Assuming role is directly available in response.data
-    localStorage.setItem('userRole', role); // 保存用户角色到 localStorage
-    setIsLoggedIn(true);
+        console.log(response.data);
+        // alert("You have successfully registered");
+        // Check the response status and data for user roles to navigate accordingly
+        if (response.status === 200 ) {
+          AuthService.setToken(response.data.access_token); // JWT
+          //alert("You have successfully logged in");
 
-    if (role === "patient") {
-      navigate("/user");
-    } else if (role === "doctor") {
-      navigate("/doctor");
-    } else if (role === "admin") {
-      navigate("/admin");
-    } else {
-      alert("Your role is undefined or not recognized.");
-    }
-  }
-})
+          const role = response.data.role; // Assuming role is directly available in response.data
+          setIsLoggedIn(true);
 
+          if (role === "patient") {
+            setIsLoggedIn(true);
+
+            navigate("/user");
+          } else if (role === "doctor") {
+            navigate("/doctor");
+          } else if (role === "admin") {
+            navigate("/admin");
+          } else {
+            alert("Your role is undefined or not recognized.");
+          }
+
+          setIsLoggedIn(true); // Assuming setIsLoggedIn updates the state that tracks login status
+        }
+      })
       .catch((error) => {
         if (error.response) {
           // If the error response has specific messages
