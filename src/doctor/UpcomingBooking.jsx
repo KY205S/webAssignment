@@ -27,7 +27,7 @@ const UpcomingBooking = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3001/upcoming")
+    fetch("http://10.14.149.222:8000/upcoming")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -57,7 +57,7 @@ const UpcomingBooking = () => {
 
     // Send the data to the backend
     axios
-      .post("http://localhost:3001/approval", postData)
+      .post("http://10.14.149.222:8000/approval", postData)
       .then((response) => {
         console.log("Response from backend:", response.data);
 

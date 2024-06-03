@@ -30,7 +30,7 @@ const Navbar = () => {
     <>
       <AppBar position="sticky">
         <StyledToolbar>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", }}>
             <MedicalServicesIcon />
             <Typography variant="h6" sx={{ marginLeft: 2 }}>
               G13 Medical

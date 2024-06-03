@@ -39,17 +39,23 @@ import Navbar from "./components/Navbar";
 
 
 function SidebarRenderer() {
-  const location = useLocation();  // Now within Router context
+  const location = useLocation();  // 使用useLocation来获取当前路径
 
   const renderSidebar = () => {
     const path = location.pathname;
+
+    // 使用正则表达式来匹配包含动态参数的路径
+    const userPaths = new RegExp('^/(user|booking|PatientAppointmentList|OnlineConsult|patient/medical-records/[^/]+|ExaminationReport|MyMapComponent|medical-records/[^/]+)$');
+    const doctorPaths = new RegExp('^/(doctor|manageBooking|DoctorAppointmentList|medical-records/[^/]+)$');
+    const adminPaths = new RegExp('^/(admin|registerDoctor|approval|ConsultService)$');
+
     if (['/', '/login', '/register', '/history'].includes(path)) {
-      return null; // No sidebar for these routes
-    } else if (['/user', '/booking', '/PatientAppointmentList', '/OnlineConsult', '/patient/medical-records/:appointmentId', '/ExaminationReport', '/MyMapComponent'].includes(path)) {
+      return null; // 这些路由不显示sidebar
+    } else if (userPaths.test(path)) {
       return <Sidebar />;
-    } else if (['/doctor', '/manageBooking', '/DoctorAppointmentList', '/medical-records/:appointmentId'].includes(path)) {
+    } else if (doctorPaths.test(path)) {
       return <Sidebar2 />;
-    } else if (['/admin', '/registerDoctor', '/Approval', '/ConsultService'].includes(path)) {
+    } else if (adminPaths.test(path)) {
       return <Sidebar3 />;
     }
   };
@@ -70,6 +76,7 @@ function App() {
     setShowPrivacyModal(false);
   };
 
+  // localStorage.removeItem("isLoggedIn");
 
   return (
     <div className="App">
@@ -89,7 +96,8 @@ function App() {
    sx={{
      flexGrow: 1,
      p: 3,
-     marginLeft: '240px' // 与侧边栏宽度一致
+     // marginLeft: isLoggedIn ? '240px' : 0
+       marginLeft: '240px'
    }}
 >            <Routes>
                   <Route path="/" element={<Welcome />} />
@@ -107,7 +115,7 @@ function App() {
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/registerDoctor" element={<RegisterDoctor />} />
                   <Route path="/messageRespond" element={<MessageRespond />} />
-                  <Route path="/Approval" element={<Approval />} />
+                  <Route path="/approval" element={<Approval />} />
                   <Route path="/updateContact" element={<UpdateContact />} />
                   <Route
                     path="/upcomingBooking"
@@ -119,10 +127,10 @@ function App() {
                   {/*<Route path="/ViewMedicalResult" element={<ViewMedicalResult />} />*/}
                   <Route path="/OnlineConsult" element={<OnlineConsult />} />
                   <Route path="/medical-records/:appointmentId" element={<MedicalRecords />} />
-                  <Route path="/patient/medical-records/:appointmentId" element={<PatientMedicalRecords />} />
                   <Route path="/ExaminationReport" element={<ExaminationReport />} />
                   <Route path="/ConsultService" element={<ConsultService />} />
                   <Route path="/MyMapComponent" element={<MyMapComponent />} />
+                <Route path="/patient/medical-records/:appointmentId" element={<PatientMedicalRecords />} />
 
                   <Route
                     path="/changePassword"

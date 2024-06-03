@@ -37,7 +37,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3001/login")
+    fetch("http://10.14.149.222:8000/login")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -103,7 +103,7 @@ const LoginPage = () => {
     };
 
     // axios
-    //   .post("http://10.14.150.90:8000/login/", formData)
+    //   .post("http://10.14.149.222:8000/login/", formData)
     //   .then((response) => {
     //     console.log(response.data);
     //     alert("You have successfully registered");
@@ -135,7 +135,7 @@ const LoginPage = () => {
           } else if (role === "doctor") {
             navigate("/doctor");
           } else if (role === "admin") {
-            navigate("/admin");
+            navigate("/ConsultService");
           } else {
             alert("Your role is undefined or not recognized.");
           }
@@ -171,7 +171,7 @@ const LoginPage = () => {
 
     // another example
     // axios
-    //   .post("http://10.14.150.90:8000/patient/login/", formData)
+    //   .post("http://10.14.149.222:8000/patient/login/", formData)
     //   .then((response) => {
     //     if (response.status === 200) {
     //       console.log(response.data);
@@ -196,6 +196,7 @@ const LoginPage = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
+        marginTop: -10, marginBottom: -6, marginLeft: "240px"
       }}
     >
       <Card sx={{ maxWidth: 400, width: "100%", m: 2 }}>
@@ -250,11 +251,11 @@ const LoginPage = () => {
               label="Remember me"
               sx={{ alignSelf: "flex-start" }}
             />
-            <FormControlLabel
-              control={<Checkbox name="remember" color="primary" />}
-              label="Doctor"
-              sx={{ alignSelf: "flex-start" }}
-            />
+            {/*<FormControlLabel*/}
+            {/*  control={<Checkbox name="remember" color="primary" />}*/}
+            {/*  label="Doctor"*/}
+            {/*  sx={{ alignSelf: "flex-start" }}*/}
+            {/*/>*/}
           </Stack>
           <Button
             variant="contained"

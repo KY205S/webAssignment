@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -20,7 +20,12 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import AuthService from "./AuthService";
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import StarBorder from '@mui/icons-material/StarBorder';
@@ -119,12 +124,22 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 const RegularSidebar = () => {
   const { setIsLoggedIn } = useContext(MyContext);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleLogout = () => {
-    AuthService.clearToken(); // AuthService clearJWT
+    AuthService.clearToken();
     setIsLoggedIn(false);
     navigate('/login');
   };
+
 
   return (
     <Box
@@ -152,15 +167,15 @@ const RegularSidebar = () => {
           // { icon: <ListAltIcon />, text: "Approval", link: "/approval" },
             { icon: <ListAltIcon />, text: "Schedule", link: "/manageBooking" },
           // { icon: <AssignmentOutlinedIcon />, text: "Records", link: "/record" },
-          { icon: <ListAltIcon />, text: "AppointmentD", link: "/DoctorAppointmentList" },
+          { icon: <ListAltIcon />, text: "Appointment", link: "/DoctorAppointmentList" },
           // { icon: <ListAltIcon />, text: "AppointmentU", link: "/PatientAppointmentList" },
           // { icon: <AnalyticsOutlinedIcon />, text: "Examination", link: "/ExaminationReport" },
           // { icon: <MessageOutlinedIcon />, text: "ConsultU", link: "/OnlineConsult" },
           // { icon: <MessageOutlinedIcon />, text: "ConsultA", link: "/ConsultService" },
-          { icon: <SettingsOutlinedIcon />, text: "ProfileD", link: "/doctor" },
+          { icon: <SettingsOutlinedIcon />, text: "Profile", link: "/doctor" },
             // { icon: <SettingsOutlinedIcon />, text: "ProfileU", link: "/user" },
             // { icon: <SettingsOutlinedIcon />, text: "Pharmacy", link: "/MyMapComponent" },
-          { icon: <LogoutIcon />, text: "Logout", link: "/" },
+          // { icon: <LogoutIcon />, text: "Logout", link: "/" },
           // { icon: <DarkModeIcon />, text: "Toggle Dark Mode", link: "#" }
         ].map((item, index) => (
           <Link key={index} to={item.link} style={{ textDecoration: "none", color: "inherit" }}>
@@ -173,16 +188,36 @@ const RegularSidebar = () => {
           </Link>
         ))}
         <ListItem disablePadding>
-          {/*<ListItemButton onClick={handleLogout}>*/}
-          {/*  <ListItemIcon><LogoutIcon /></ListItemIcon>*/}
-          {/*  <ListItemText primary="Logout" />*/}
-          {/*</ListItemButton>*/}
+          <ListItemButton onClick={handleClickOpen}>
+            <ListItemIcon><LogoutIcon /></ListItemIcon>
+            <ListItemText primary="Logout" sx={{ marginLeft: "-16px" }}/>
+          </ListItemButton>
         </ListItem>
       </List>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Logout"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to logout?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleLogout} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
-
 
 //   return (
 //     <Box flex={1} p={1}>

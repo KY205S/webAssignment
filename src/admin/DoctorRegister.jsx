@@ -1,22 +1,13 @@
 import React from "react";
 import {
-  Box,
-  Card,
-  CardContent,
-  TextField,
-  Button,
-  FormControlLabel,
-  Typography,
-  Stack,
-} from "@mui/material";
+  Box, Card, CardContent, Grid, Button, Typography, TextField, Stack,
+  FormControl, FormLabel, Radio, RadioGroup, FormControlLabel,
+  IconButton, InputAdornment
+} from '@mui/material';
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import { useState, useEffect } from "react";
 import { Email } from "@mui/icons-material";
-import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/material";
-import { Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -32,20 +23,18 @@ const dates = Array.from({ length: 7 }, (_, i) => {
 });
 const RegisterDoctor = () => {
   const navigate = useNavigate();
-
   const [step, setStep] = useState(1);
-  //Save data
   const [identityNumber, setIdentityNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [gender, setGender] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
+
 
   const handleIdentityChange = (event) => {
     setIdentityNumber(event.target.value);
@@ -145,8 +134,8 @@ const RegisterDoctor = () => {
     // }
 
     // axios
-    //   .post("http://10.14.150.90:8000/doctor/register/", formData)
-       AuthService.makeAuthRequest("http://10.14.148.57:8000/doctor/register/", {
+    //   .post("http://10.14.149.222:8000/doctor/register/", formData)
+       AuthService.makeAuthRequest("http://10.14.149.222:8000/doctor/register/", {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -160,7 +149,7 @@ const RegisterDoctor = () => {
         if (response.status === 201) {
           // Status code 201 means creation was successful
           alert("You have successfully registered");
-          navigate("/login"); // Make sure navigate is correctly imported from your routing library
+          navigate("/ConsultService"); // Make sure navigate is correctly imported from your routing library
         } else {
           // If status code is not 201, log and show the message
           console.log("Unexpected status code:", response.status);
@@ -183,10 +172,60 @@ const RegisterDoctor = () => {
         } else {
           // Something happened in setting up the request that triggered an Error
           console.log("Error message:", error.message);
-          alert("An error occurred: " + error.message);
+          //alert("An error occurred: " + error.message);
         }
       });
   };
+
+
+  const departmentStructure = [
+  {
+    category: "Internal Medicine",
+    subdepartments: ["Cardiology", "Gastroenterology", "Endocrinology", "Nephrology"]
+  },
+  {
+    category: "Surgery",
+    subdepartments: ["General Surgery", "Cardiac Surgery", "Plastic Surgery", "Orthopedic Surgery"]
+  },
+  {
+    category: "Maternal and Child Health",
+    subdepartments: ["Obstetrics", "Gynecology", "Neonatology", "Pediatric Internal Medicine", "Pediatric Neurology", "Pediatric Oncology"]
+  },
+  {
+    category: "Ophthalmology and Otorhinolaryngology",
+    subdepartments: ["Eye", "Retina", "Cataract and Refractive Surgery", "Ocular Trauma and Orbit Surgery", "Otology", "Rhinology", "Laryngology"]
+  },
+  {
+    category: "Mental Health",
+    subdepartments: ["Adult Psychiatry", "Child and Adolescent Psychiatry", "Geriatric Psychiatry", "Clinical Psychology", "Psychotherapy", "Rehabilitation Psychology"]
+  }
+];
+
+const handleSelectDepartment = (department) => {
+  setSelectedDepartment(department);
+};
+
+const renderDepartments = () => {
+    return departmentStructure.map((department) => (
+      <div key={department.category}>
+        <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>{department.category}</Typography>
+        <Grid container spacing={2}>
+          {department.subdepartments.map((subdepartment) => (
+            <Grid item xs={12} sm={6} md={3} key={subdepartment}>
+              <Button
+                fullWidth
+                variant={selectedDepartment === subdepartment ? "contained" : "outlined"}
+                onClick={() => handleSelect(subdepartment)}
+              >
+                {subdepartment}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    ));
+  };
+
 
   return (
     <div>
@@ -399,9 +438,9 @@ const RegisterDoctor = () => {
                   >
                     Next
                   </Button>
-                  <Button color="primary" sx={{ mt: 1 }}>
-                    Back to login
-                  </Button>
+                  {/*<Button color="primary" sx={{ mt: 1 }}>*/}
+                  {/*  Back to login*/}
+                  {/*</Button>*/}
                 </CardContent>
               </Card>
             </Box>
@@ -409,179 +448,56 @@ const RegisterDoctor = () => {
         </Box>
         <Box>
           {step === 2 && (
-            <Box
-              marginLeft={35}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-                p: 2,
-              }}
-            >
-              <Card sx={{ maxWidth: 500, width: "100%", m: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={group13Logo} alt="Group13 Logo" style={{maxWidth: "100px", marginTop: "20px"}}/>
-                </Box>
-                <CardContent
-                    sx={{
-                      display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                  }}
-                >
-                  <Stack direction="column" spacing={2}>
-                    <Typography variant="h6" align="center">
-                      Assign Department
-                    </Typography>
-                    <Grid container spacing={2}>
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Internal Medicine"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() => handleSelect("Internal Medicine")}
-                          style={{ width: "90%" }}
-                        >
-                          Internal Medicine
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Urology"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() => handleSelect("Urology")}
-                          style={{ width: "90%" }}
-                        >
-                          Urology
-                        </Button>
-                      </Grid>
-
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Pediatrics"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() => handleSelect("Pediatrics")}
-                          style={{ width: "90%" }}
-                        >
-                          Pediatrics
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Eye Clinic"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() => handleSelect("Eye Clinic")}
-                          style={{ width: "90%" }}
-                        >
-                          Eye Clinic
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Neurosurgery"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() => handleSelect("Neurosurgery")}
-                          style={{ width: "90%" }}
-                        >
-                          Neurosurgery
-                        </Button>
-                      </Grid>
-
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Dermatology"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() => handleSelect("Dermatology")}
-                          style={{ width: "90%" }}
-                        >
-                          Dermatology
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment ===
-                            "Sports Medicine and Orthopedics"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() =>
-                            handleSelect("Sports Medicine and Orthopedics")
-                          }
-                          style={{ width: "90%" }}
-                        >
-                          Sports Medicine and Orthopedics
-                        </Button>
-                      </Grid>
-
-                      <Grid item xs={6}>
-                        <Button
-                          variant={
-                            selectedDepartment === "Digestive Disease Center"
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() =>
-                            handleSelect("Digestive Disease Center")
-                          }
-                          style={{ width: "90%" }}
-                        >
-                          Digestive Disease Center
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Stack>
-
+             <Box sx={{
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+              p: 2,
+              marginLeft: 0, marginRight: 2,
+              marginTop: -3,
+              marginBottom: -6
+            }}>
+              <Card sx={{ maxWidth: "140%", width: "100%", m: 2 }}>
+                <CardContent sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  alignItems: "left",
+                }}>
+                  <Typography variant="h4" align="center">
+                    Assign Department
+                  </Typography>
+                  {renderDepartments()}
                   <TextField
                     fullWidth
-                    id="firstName"
+                    id="doctorDescription"
                     label="Doctor Description"
                     variant="outlined"
                     value={description}
-                    onChange={handleDescription}
-                    sx={{
-                      marginTop: 2,
-                      width: "95%",
-                      boxSizing: 4,
-                    }}
+                    onChange={(e) => setDescription(e.target.value)}
+                    multiline
+                    minRows={4}
+                    sx={{ marginTop: 2, width: "100%" }}
                   />
-
                   <TextField
                     fullWidth
-                    id="firstName"
+                    id="extraInformation"
                     label="Extra Information"
                     variant="outlined"
                     value={extraInformation}
-                    onChange={handleExtraInformation}
-                    sx={{
-                      width: "95%",
-                      boxSizing: 4,
-                    }}
+                    onChange={(e) => setExtraInformation(e.target.value)}
+                    multiline
+                    minRows={4}
+                    sx={{ width: "100%" }}
                   />
+                  <Box
+  sx={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 1, // 间距
+  }}
+>
                   <Button
                     variant="contained"
                     color="primary"
@@ -591,18 +507,19 @@ const RegisterDoctor = () => {
                     Submit
                   </Button>
                   <Button
-                    onClick={handleBack}
+                    onClick={() => setStep(1)}
                     variant="outlined"
                     color="primary"
                     sx={{ mt: 0, width: "50%" }}
                   >
                     Back
                   </Button>
+                    </Box>
                 </CardContent>
               </Card>
             </Box>
-          )}
-        </Box>
+              )}
+              </Box>
         {/* Personal information register box */}
       </form>
     </div>

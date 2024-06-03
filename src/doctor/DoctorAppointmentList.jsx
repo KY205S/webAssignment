@@ -110,12 +110,17 @@ const AppointmentListPage = () => {
         return (
           <>
             <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => handleStatusChange(appointmentNumber, "Accepted")}
-            >
-              Accept
-            </Button>
+  variant="outlined"
+  color="primary"
+  onClick={() => {
+    setCurrentAppointmentNumber(appointmentNumber);
+    setCurrentStatus("Accepted");
+    setActionToConfirm("accept");
+    setConfirmOpen(true);
+  }}
+>
+  Accept
+</Button>
             <Button
               variant="outlined"
               color="error"
@@ -147,12 +152,17 @@ const AppointmentListPage = () => {
         return (
           <>
             <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => handleStatusChange(appointmentNumber, "Currently consulting")}
-            >
-              Start
-            </Button>
+  variant="outlined"
+  color="primary"
+  onClick={() => {
+    setCurrentAppointmentNumber(appointmentNumber);
+    setCurrentStatus("Currently consulting");
+    setActionToConfirm("start");
+    setConfirmOpen(true);
+  }}
+>
+  Start
+</Button>
             <Button
               variant="outlined"
               color="secondary"
@@ -166,12 +176,17 @@ const AppointmentListPage = () => {
       case "currently consulting":
         return (
           <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => handleStatusChange(appointmentNumber, "Completed")}
-          >
-            Complete
-          </Button>
+  variant="outlined"
+  color="primary"
+  onClick={() => {
+    setCurrentAppointmentNumber(appointmentNumber);
+    setCurrentStatus("Completed");
+    setActionToConfirm("complete");
+    setConfirmOpen(true);
+  }}
+>
+  Complete
+</Button>
         );
       default:
         return null;
@@ -240,6 +255,8 @@ const AppointmentListPage = () => {
     }
   };
 
+  const [confirmOpen, setConfirmOpen] = useState(false);
+const [actionToConfirm, setActionToConfirm] = useState("");
 
   const [uploadError, setUploadError] = useState(null);
 
@@ -277,7 +294,7 @@ const AppointmentListPage = () => {
                       <Tooltip title={appointment.description} arrow>
                       <Typography
                         sx={{
-                          maxWidth: "200px",
+                          maxWidth: "300px",
                           display: "-webkit-box",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
@@ -376,6 +393,26 @@ const AppointmentListPage = () => {
   <DialogActions>
     <Button onClick={() => setOpenUploadDialog(false)}>Cancel</Button>
     <Button onClick={handleUploadSubmit}>Upload</Button>
+  </DialogActions>
+</Dialog>
+
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+  <DialogTitle>Confirm Action</DialogTitle>
+  <DialogContent>
+    <DialogContentText>
+      Are you sure you want to {actionToConfirm} this appointment?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setConfirmOpen(false)} color="secondary">
+      Cancel
+    </Button>
+    <Button onClick={() => {
+      handleStatusChange(currentAppointmentNumber, currentStatus, doctor_advice);
+      setConfirmOpen(false);
+    }} color="primary">
+      Confirm
+    </Button>
   </DialogActions>
 </Dialog>
 

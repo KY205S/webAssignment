@@ -19,3 +19,7 @@
   align-self: flex-end;
   text-align: right;
 }
+
+.Mui-selected {
+  background-color: rgba(0, 0, 0, 0.08) !important; /* or any color you prefer */
+}

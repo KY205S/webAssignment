@@ -117,46 +117,54 @@ const Approval = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
-              <TableRow
-                key={user.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+  {users.length > 0 ? (
+    users.map((user) => (
+      <TableRow
+        key={user.id}
+        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      >
+        <TableCell component="th" scope="row" align="center">
+          {user.id}
+        </TableCell>
+        <TableCell align="center">{user.identity}</TableCell>
+        <TableCell align="center">{user.email}</TableCell>
+        <TableCell align="center">{user.lastName}</TableCell>
+        <TableCell align="center">{user.firstName}</TableCell>
+        <TableCell align="center">
+          {user.status === "Approved" ? (
+            <span>Approved</span>
+          ) : user.status === "Declined" ? (
+            <span>Declined</span>
+          ) : (
+            <>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => handleApprove(user.id)}
               >
-                <TableCell component="th" scope="row" align="center">
-                  {user.id}
-                </TableCell>
-                <TableCell align="center">{user.identity}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
-                <TableCell align="center">{user.lastName}</TableCell>
-                <TableCell align="center">{user.firstName}</TableCell>
-                <TableCell align="center">
-                  {user.status === "Approved" ? (
-                    <span>Approved</span>
-                  ) : user.status === "Declined" ? (
-                    <span>Declined</span>
-                  ) : (
-                    <>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => handleApprove(user.id)}
-                      >
-                        Approve
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleDecline(user.id)}
-                        sx={{ ml: 1 }}
-                      >
-                        Decline
-                      </Button>
-                    </>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+                Approve
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleDecline(user.id)}
+                sx={{ ml: 1 }}
+              >
+                Decline
+              </Button>
+            </>
+          )}
+        </TableCell>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={6} align="center">
+        All registration applications have been processed.
+      </TableCell>
+    </TableRow>
+  )}
+</TableBody>
         </Table>
       </TableContainer>
     </Card>
@@ -171,7 +179,7 @@ const Approval = () => {
         bottom: 0,
         right: 80,
       }}
-      onClick={() => navigate("/admin")}
+      onClick={() => navigate("/ConsultService")}
     >
       Back
     </Button>

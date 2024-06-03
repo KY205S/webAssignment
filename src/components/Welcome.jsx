@@ -20,7 +20,7 @@ const Welcome = () => {
 
   return (
     <Box flex={9} p={2}>
-      <Card sx={{ marginLeft: 5 }}>
+      <Card sx={{ marginLeft: -25, marginTop: -3, marginBottom: -4 }}>
         {/*<CardHeader*/}
         {/*  avatar={*/}
         {/*    <Avatar sx={{ bgcolor: "skyblue" }} aria-label="recipe">*/}
